@@ -52,7 +52,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBContext.cs" />
+    <Compile Include="EFRepo\EFQuicklistRepo.cs" />
     <Compile Include="EFRepo\EFPersonRepo.cs" />
+    <Compile Include="Migrations\201702191455077_create.cs" />
+    <Compile Include="Migrations\201702191455077_create.Designer.cs">
+      <DependentUpon>201702191455077_create.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702191704470_quiclist.cs" />
+    <Compile Include="Migrations\201702191704470_quiclist.Designer.cs">
+      <DependentUpon>201702191704470_quiclist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702191719469_PK email.cs" />
+    <Compile Include="Migrations\201702191719469_PK email.Designer.cs">
+      <DependentUpon>201702191719469_PK email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702191725252_add to manyToMany.cs" />
+    <Compile Include="Migrations\201702191725252_add to manyToMany.Designer.cs">
+      <DependentUpon>201702191725252_add to manyToMany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +82,20 @@
       <Project>{46112a18-e83a-4f1d-a6f7-0750c83e0942}</Project>
       <Name>IDAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702191455077_create.resx">
+      <DependentUpon>201702191455077_create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702191704470_quiclist.resx">
+      <DependentUpon>201702191704470_quiclist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702191719469_PK email.resx">
+      <DependentUpon>201702191719469_PK email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702191725252_add to manyToMany.resx">
+      <DependentUpon>201702191725252_add to manyToMany.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

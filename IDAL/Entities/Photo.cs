@@ -7,7 +7,7 @@ namespace IDAL.Entities
 {
     public class Photo
     {
-        public int PhotoId { get; set; }
+        public string PhotoId { get; set; }
         public bool IsPrivate { get; set; }
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }

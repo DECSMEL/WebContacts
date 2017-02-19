@@ -17,6 +17,7 @@ namespace EFDAL
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Phone> Phones { get; set; }
         public virtual DbSet<Photo> Photos { get; set; }
+        public virtual DbSet<Quicklist> Quicklists { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -25,15 +26,10 @@ namespace EFDAL
             modelBuilder.Entity<Person>().HasOptional(p => p.Photo)
                                          .WithRequired(ph => ph.Person);
 
+            modelBuilder.Entity<Person>().HasKey(p => p.Email);
+
             modelBuilder.Entity<Person>().Property(p => p.Password)
                                          .IsRequired();
-
-            modelBuilder.Entity<Person>().Property(p => p.Email)
-                                         .IsRequired()
-                                         .HasColumnAnnotation(IndexAnnotation.AnnotationName,
-                                          new IndexAnnotation(new IndexAttribute("IX_Email", 1) { IsUnique = true }));
-
-
 
         }
     }

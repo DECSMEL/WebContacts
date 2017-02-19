@@ -45,7 +45,8 @@
     <Compile Include="Entities\PhoneType.cs" />
     <Compile Include="Entities\Photo.cs" />
     <Compile Include="Entities\Quicklist.cs" />
-    <Compile Include="IRepo.cs" />
+    <Compile Include="IQuicklistRepo.cs" />
+    <Compile Include="IPersonRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

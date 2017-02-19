@@ -10,7 +10,7 @@ namespace IDAL.Entities
     {
         public Quicklist()
         {
-            Persons = new List<Person>();
+            Persons = new HashSet<Person>();
         }
 
         public int QuicklistId { get; set; }
