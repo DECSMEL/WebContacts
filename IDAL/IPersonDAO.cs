@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    public interface IPersonRepo
+    public interface IPersonDAO
     {
         IEnumerable<Person> GetAll();
-        Person GetById(string email);
+        Person GetById(int id);
         IEnumerable<Person> Find(string lastName);
         bool Create(Person person);
         bool Update(Person person);
-        bool Delete(string email);
-        bool AddToQuicklist(int id, string email);
-
+        bool Delete(int id);
     }
 }

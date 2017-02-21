@@ -7,13 +7,13 @@ namespace EFDAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addtomanyToMany : IMigrationMetadata
+    public sealed partial class create : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addtomanyToMany));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(create));
         
         string IMigrationMetadata.Id
         {
-            get { return "201702191725252_add to manyToMany"; }
+            get { return "201702212105354_create"; }
         }
         
         string IMigrationMetadata.Source

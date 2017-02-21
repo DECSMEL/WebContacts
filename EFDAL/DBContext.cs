@@ -21,16 +21,36 @@ namespace EFDAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
 
-            //one to one
-            modelBuilder.Entity<Person>().HasOptional(p => p.Photo)
-                                         .WithRequired(ph => ph.Person);
-
-            modelBuilder.Entity<Person>().HasKey(p => p.Email);
-
+            //Person settings
+            modelBuilder.Entity<Person>().Property(p => p.Email)
+                                         .IsRequired()
+                                         .HasMaxLength(100)
+                                         .HasColumnAnnotation(IndexAnnotation.AnnotationName,
+                                          new IndexAnnotation(new IndexAttribute("IX_Email", 1) { IsUnique = true }));
             modelBuilder.Entity<Person>().Property(p => p.Password)
-                                         .IsRequired();
+                                         .IsRequired()
+                                         .HasMaxLength(50);
+            modelBuilder.Entity<Person>().Property(p => p.FirstName)
+                                         .HasMaxLength(100);
+            modelBuilder.Entity<Person>().Property(p => p.LastName)
+                                         .HasMaxLength(100);
 
+            //Photo settings
+            modelBuilder.Entity<Photo>().Property(p => p.ImageMimeType)
+                                        .HasMaxLength(50);
+            //Photo one-to-one settings
+            modelBuilder.Entity<Person>().HasOptional(p => p.Photo)
+                            .WithRequired(ph => ph.Person).WillCascadeOnDelete();
+
+            //Phone settings
+            modelBuilder.Entity<Phone>().Property(p => p.Number)
+                                        .HasMaxLength(50);
+
+            //Quiclist settings 
+            modelBuilder.Entity<Quicklist>().Property(p => p.Name)
+                                       .HasMaxLength(30);
         }
     }
 }

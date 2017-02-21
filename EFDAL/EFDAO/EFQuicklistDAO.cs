@@ -7,9 +7,9 @@ using System.Data.Entity;
 using IDAL;
 using IDAL.Entities;
 
-namespace EFDAL.EFRepo
+namespace EFDAL.EFDAO
 {
-    public class EFQuicklistRepo : IQuicklistRepo
+    public class EFQuicklistDAO : IQuicklistDAO
     {
         private DBContext context;
 
@@ -21,17 +21,17 @@ namespace EFDAL.EFRepo
             }
         }
 
-        public bool AddToQuicklist(int id, string email)
+        public bool AddToQuicklist(int listId, int personId)
         {
             using (context = new DBContext())
             {
-                Person p = new Person { Email = email };
-                context.Persons.Attach(p);
+                Person person = new Person { PersonId = personId };
+                context.Persons.Attach(person);
 
-                Quicklist qlist = new Quicklist { QuicklistId = id };
+                Quicklist qlist = new Quicklist { QuicklistId = listId };
                 context.Quicklists.Add(qlist);
                 context.Quicklists.Attach(qlist);
-                qlist.Persons.Add(p);
+                qlist.Persons.Add(person);
 
                 context.SaveChanges();
                 return true;

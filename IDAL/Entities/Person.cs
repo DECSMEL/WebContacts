@@ -11,10 +11,10 @@ namespace IDAL.Entities
         public Person()
         {
             Phones = new List<Phone>();
-            Quicklist = new HashSet<Quicklist>();
-            Quicklist.Add(new Quicklist() { Name = "Frends" });
+            Quicklist = new List<Quicklist>();
         }
 
+        public int PersonId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string FirstName { get; set; }

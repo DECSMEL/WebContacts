@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IDAL
 {
-    public interface IQuicklistRepo
+    public interface IQuicklistDAO
     {
         Quicklist GetQuicklist(int id);
-        bool AddToQuicklist(int id, string email);
+        bool AddToQuicklist(int listId, int personId);
 
     }
 }
