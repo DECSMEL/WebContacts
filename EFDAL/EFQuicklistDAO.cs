@@ -7,7 +7,7 @@ using System.Data.Entity;
 using IDAL;
 using IDAL.Entities;
 
-namespace EFDAL.EFDAO
+namespace EFDAL
 {
     public class EFQuicklistDAO : IQuicklistDAO
     {

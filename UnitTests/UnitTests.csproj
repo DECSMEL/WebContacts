@@ -63,10 +63,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="EFDAO\EFRersonDAOTests.cs" />
+    <Compile Include="EFDAL\EFRersonDAOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BLL\ServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{F0B13CB9-3894-4747-A64F-D73931272ECF}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EFDAL\EFDAL.csproj">
       <Project>{F3C59B5B-BDA0-4271-B78C-8011F87880CD}</Project>
       <Name>EFDAL</Name>

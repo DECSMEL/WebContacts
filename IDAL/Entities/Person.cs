@@ -11,7 +11,7 @@ namespace IDAL.Entities
         public Person()
         {
             Phones = new List<Phone>();
-            Quicklist = new List<Quicklist>();
+            Quicklist = new HashSet<Quicklist>();
         }
 
         public int PersonId { get; set; }

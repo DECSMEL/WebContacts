@@ -7,7 +7,7 @@ using System.Data.Entity;
 using IDAL;
 using IDAL.Entities;
 
-namespace EFDAL.EFDAO
+namespace EFDAL
 {
     public class EFRersonDAO : IPersonDAO
     {
@@ -33,11 +33,11 @@ namespace EFDAL.EFDAO
             }
         }
 
-        public IEnumerable<Person> Find(string lName)
+        public IEnumerable<Person> Find(string lastName)
         {
             using (var context = new DBContext())
             {
-                var persons = context.Persons.Where(m => m.LastName.Contains(lName));
+                var persons = context.Persons.Where(m => m.LastName.Contains(lastName));
                 return persons.ToList();
             }
         }
@@ -61,18 +61,28 @@ namespace EFDAL.EFDAO
                 context.Persons.Attach(person);
                 context.Entry(person).State = EntityState.Modified;
                 context.Entry(person.Photo).State = EntityState.Modified;
-                foreach (Phone ph in person.Phones)
+                foreach (Phone phone in person.Phones)
                 {
-                    context.Entry(ph).State = EntityState.Modified;
+                    if (phone.PhoneId != 0)
+                    {
+                        context.Entry(phone).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Phones.Add(phone);
+                    }
                 }
                 foreach (Quicklist ql in person.Quicklist)
                 {
-                    context.Entry(ql).State = EntityState.Modified;
+                    if (ql.QuicklistId != 0)
+                    {
+                        context.Entry(ql).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Quicklists.Add(ql);
+                    }
                 }
-                //var oldPerson = context.Persons.Find(person.PersonId);
-                //oldPerson.Phones = person.Phones;
-                //oldPerson.Photo = person.Photo;
-                //oldPerson.Quicklist = person.Quicklist;
                 context.SaveChanges();
             }
             return true;
@@ -82,12 +92,8 @@ namespace EFDAL.EFDAO
         {
             using (var context = new DBContext())
             {
-                Person person = context.Persons.Find(id);
-                                                            
- //                   .Include(p => p.Photo)                                               .Single(p => p.PersonId == id);
-
+                Person person = context.Persons.Find(id);                                                           
                 context.Quicklists.RemoveRange(person.Quicklist);
-//                context.Phones.RemoveRange(person.Phones);
                 context.Persons.Remove(person);
                 context.SaveChanges();
             }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL
+namespace BLL.ResultsModel
 {
-    public class Class1
+    public class OneResult<T> : Result
     {
+        public T Data { get; set; }       
     }
 }

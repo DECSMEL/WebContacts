@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EFDAL.EFDAO;
+using EFDAL;
 using IDAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFDAL.EFRepo.Tests
+namespace EFDAL.Tests
 {
     [TestClass()]
     public class EFRersonDAOTests
@@ -16,7 +16,7 @@ namespace EFDAL.EFRepo.Tests
         {
             FirstName = "Alex",
             LastName = "Che",
-            Email = "d2@gmail.com",
+            Email = "decs@gmail.com",
             Password = "test1",
             Photo = new Photo() { ImageMimeType = "jpeg" },
             Phones = new List<Phone>()
@@ -34,7 +34,7 @@ namespace EFDAL.EFRepo.Tests
         {
             FirstName = "Angry",
             LastName = "Bird",
-            Email = "dd2@gmail.com",
+            Email = "alex@gmail.com",
             Password = "test2",
             Photo = new Photo() { ImageMimeType = "png" },
             Phones = new List<Phone>()
@@ -52,26 +52,43 @@ namespace EFDAL.EFRepo.Tests
 
 
         [TestMethod()]
-        public void DAOtest()
+        public void CreateTest()
         {
-            dao.Create(person1);
-            dao.Create(person2);
+           dao.Create(person1);
+           dao.Create(person2);
+           var pers1 = dao.Find("Che").FirstOrDefault();
+           var pers2 = dao.Find("Bird").FirstOrDefault();
+           Assert.IsNotNull(pers1);
+           Assert.IsNotNull(pers2);
+        }
 
+        [TestMethod()]
+        public void UpdateTest()
+        {
             int pers1Id = dao.Find("Che").First().PersonId;
-
             Person pers = dao.GetById(pers1Id);
-
             pers.FirstName = "New1";
             pers.Phones.First().Number = "0000";
             pers.Quicklist.First().Name = "Frends";
             pers.Photo.ImageMimeType = "text";
+            pers.Phones.Add(new Phone() { Number = "0000", PersonId = pers.PersonId });
             dao.Update(pers);
+            Person newPers = dao.GetById(pers1Id);
+            Assert.AreEqual(pers.FirstName, newPers.FirstName);
+            Assert.AreEqual(pers.Phones.First().Number, newPers.Phones.First().Number);
+        }
 
+        [TestMethod()]
+        public void DeleteTest()
+        {
+            int pers1Id = dao.Find("Che").First().PersonId;
             int pers2Id = dao.Find("Bird").First().PersonId;
             dao.Delete(pers1Id);
             dao.Delete(pers2Id);
-     
+            var pers1 = dao.Find("Che").FirstOrDefault();
+            var pers2 = dao.Find("Bird").FirstOrDefault();
+            Assert.IsNull(pers1);
+            Assert.IsNull(pers2);
         }
-
     }
 }
