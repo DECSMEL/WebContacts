@@ -8,6 +8,10 @@ namespace BLL.ResultsModel
 {
     public class ListResult<T> : Result
     {
-        public List<T> ListData { get; set; }
+        public ListResult()
+        {
+            ListData = new List<T>();
+        }
+        public IList<T> ListData { get; set; }
     }
 }

@@ -1,0 +1,51 @@
+﻿@model BLL.ViewModel.ContactVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Person</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        @foreach (var phone in Model.Phones)
+        { 
+        <dt>
+            @Html.DisplayNameFor(ph => phone.Type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(ph => phone.Type)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(ph => phone.Number)
+        </dt>
+        <dd>
+            @Html.DisplayFor(ph => phone.Number)
+        </dd>
+        }
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "All")
+</p>
+

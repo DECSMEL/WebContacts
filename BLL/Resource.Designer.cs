@@ -70,11 +70,38 @@ namespace BLL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are not contacts in book yet.
+        /// </summary>
+        internal static string GetAllNone {
+            get {
+                return ResourceManager.GetString("GetAllNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Successfull read all contacts.
         /// </summary>
         internal static string GetAllSuccess {
             get {
                 return ResourceManager.GetString("GetAllSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail during reading detail about contact.
+        /// </summary>
+        internal static string GetDetailsFail {
+            get {
+                return ResourceManager.GetString("GetDetailsFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfull read detail about contact.
+        /// </summary>
+        internal static string GetDetailsSuccess {
+            get {
+                return ResourceManager.GetString("GetDetailsSuccess", resourceCulture);
             }
         }
     }

@@ -16,8 +16,9 @@ namespace EFDAL
         {
             using (var context = new DBContext())
             {
-                var persons = context.Persons.Include(i => i.Phones);
-                return persons.ToList();
+                var persons = context.Persons.Include(i => i.Phones).OrderBy(l => l.LastName);
+                if (persons == null) return null;
+                else return persons.ToList();
             }
         }
 
@@ -27,7 +28,6 @@ namespace EFDAL
             {
                 Person person = context.Persons.Include(m => m.Phones)
                                                .Include(m => m.Photo)
-                                               .Include(m => m.Quicklist)
                                                .SingleOrDefault(m => m.PersonId == id);
                 return person;
             }
@@ -40,6 +40,16 @@ namespace EFDAL
                 var persons = context.Persons.Where(m => m.LastName.Contains(lastName));
                 return persons.ToList();
             }
+        }
+
+        public bool PasswordCheck(string email, string password)
+        {
+            bool userValid = false;
+            using (var context = new DBContext())
+            {
+                userValid  = context.Persons.Any(p => p.Email == email && p.Password == password);
+            }
+            return userValid;
         }
 
 

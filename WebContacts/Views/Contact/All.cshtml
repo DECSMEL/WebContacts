@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<BLL.ViewModel.ContactVM>
+@using BLL.ViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All contacts";
 }
 
 <h2>Contacts:</h2>
@@ -19,7 +20,7 @@
             <label>Phone Numbers</label>
         </th>
         <th>
-            <label></label>
+            <label>Details</label>
         </th>
     </tr>
 
@@ -27,29 +28,24 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(i => item.FirstName)                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(i => item.LastName)
             </td>
             <td>
                 @foreach (var phone in item.Phones)
                 {
-                    @Html.DisplayFor(p => phone.Type)
+                    @phone.Type
                     <i> : </i>
-                    @Html.DisplayFor(p => phone.Number)
+                    @phone.Number
                     <br>
                 }
             </td>
             <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.PersonId }, new { @class = "btn btn-default" })
-                @Html.ActionLink("Edit", "Edit", new { id = item.PersonId }, new { @class = "btn btn-default" })
-                @Html.ActionLink("Details", "Details", new { id = item.PersonId }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Details", "Details", new { id = item.ContactId }, new { @class = "btn btn-default" })
             </td>
         </tr>
     }
 </table>
-<p>
-    @Html.ActionLink("Create New", "Create", new { @class = "btn btn-primary" })
-</p>
 

@@ -10,7 +10,7 @@ namespace BLL.ViewModel
 {
     public class ContactVM
     {
-        public ContactVM(int contactId, string firstName, string lastName, PhotoVM photo, IList<PhoneVM> phones)
+        public ContactVM(int contactId, string firstName, string lastName, IList<PhoneVM> phones, PhotoVM photo = null)
         {
             this.ContactId = contactId;
             this.FirstName = firstName;

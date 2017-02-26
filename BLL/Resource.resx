@@ -120,7 +120,16 @@
   <data name="GetAllContactFail" xml:space="preserve">
     <value>Fail during reading of contacts</value>
   </data>
+  <data name="GetAllNone" xml:space="preserve">
+    <value>There are not contacts in book yet</value>
+  </data>
   <data name="GetAllSuccess" xml:space="preserve">
     <value>Successfull read all contacts</value>
+  </data>
+  <data name="GetDetailsFail" xml:space="preserve">
+    <value>Fail during reading detail about contact</value>
+  </data>
+  <data name="GetDetailsSuccess" xml:space="preserve">
+    <value>Successfull read detail about contact</value>
   </data>
 </root>

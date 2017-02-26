@@ -11,7 +11,7 @@ namespace BLL.ViewModel
     public class PhoneVM
     {
         public int PhoneId { get; set; }
-        public PhoneType Type { get; set; }
+        public PhoneTypeVM Type { get; set; }
         [StringLength(50)]
         [RegularExpression("^\\+[1-9]{1}[0-9]{3,20}$")]
         public string Number { get; set; }

@@ -1,4 +1,5 @@
-﻿using BLL.ResultsModel;
+﻿using BLL.Converters;
+using BLL.ResultsModel;
 using BLL.ViewModel;
 using IDAL;
 using IDAL.Entities;
@@ -13,66 +14,82 @@ namespace BLL.Services
 {
     public class ContactSevice
     {
-        private static IPersonDAO dao = Unity.Container.Resolve<IPersonDAO>();
+        private static IPersonDAO personDao = Unity.Container.Resolve<IPersonDAO>();
+
+        public static bool PasswordCheck(string email, string password)
+        {
+            return personDao.PasswordCheck(email, password);
+        }
+        
         public static ListResult<ContactVM> GetAllContacts()
         {
             ListResult<ContactVM> contacts = new ListResult<ContactVM>();
             try
             {
-                var persons = dao.GetAll();
-                foreach (Person pers in persons)
+                var persons = personDao.GetAll();
+                if (persons != null)
                 {
-                    contacts.ListData.Add(ConvertPersonToContactVM(pers));
+                    foreach (Person pers in persons)
+                    {
+                        ContactVM contact = ConverterPersonToContact.ForAllView(pers);
+                        contacts.ListData.Add(contact);
+                    }
+                    contacts.IsOk = true;
+                    contacts.Message = Resource.GetAllSuccess;
+                } else
+                {
+                    contacts.IsOk = false;
+                    contacts.Message = Resource.GetAllNone;
                 }
+                
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                //TO DO logging
                 contacts.IsOk = false;
-                contacts.Message = ex.Message;
+                contacts.Message = Resource.GetAllContactFail;
             }
-            contacts.IsOk = true;
-            contacts.Message = Resource.GetAllSuccess;
             return contacts;
         }
 
-
-        private static ContactVM ConvertPersonToContactVM(Person person)
+        public static OneResult<ContactVM> GetContactDetails(int id)
         {
-            return new ContactVM(person.PersonId, person.FirstName, person.LastName,
-                                                ConvertPhotoToPhotoVM(person.Photo),
-                                                ConvertListPhoneToVM(person.Phones));              
-        }
-
-        private static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
-        {
-            return new PhotoVM()
+            OneResult<ContactVM> contact = new OneResult<ContactVM>();
+            try
             {
-                PhotoId = photo.PhotoId,
-                IsPrivate = photo.IsPrivate,
-                ImageMimeType = photo.ImageMimeType,
-                ImageData = photo.ImageData
-            };
-        }
+                Person person = personDao.GetById(id);
+                if (person != null)
+                {
+                    contact.Data = ConverterPersonToContact.ForDetailView(person);
+                    contact.IsOk = true;
+                    contact.Message = Resource.GetDetailsSuccess;
+                }
 
-        private static PhoneVM ConvertPhoneToPhoneVM(Phone phone)
-        {
-            return new PhoneVM()
-            {
-                PhoneId = phone.PhoneId,
-                Type = phone.Type,
-                Number = phone.Number,
-                PersonId = phone.PersonId                
-            };
-        }
-
-        private static List<PhoneVM> ConvertListPhoneToVM(ICollection<Phone> phones)
-        {
-            List<PhoneVM> newPhones = new List<PhoneVM>();
-            foreach (Phone ph in phones)
-            {
-                newPhones.Add(ConvertPhoneToPhoneVM(ph));
             }
-            return newPhones;
+            catch (Exception)
+            {
+                //TO DO logging
+                contact.IsOk = false;
+                contact.Message = Resource.GetDetailsFail;
+            }
+            return contact;
         }
+
+        public static bool Create(ContactEditM contact)
+        {
+            try
+            {
+                Person person = ConverterContactToPerson.ForNewSave(contact);
+                personDao.Create(person);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //TO DO logging
+                return false;
+            }
+        }
+
     }
+
 }

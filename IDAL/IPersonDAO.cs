@@ -15,5 +15,6 @@ namespace IDAL
         bool Create(Person person);
         bool Update(Person person);
         bool Delete(int id);
+        bool PasswordCheck(string email, string password);
     }
 }

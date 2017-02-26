@@ -54,16 +54,12 @@
     <Compile Include="DBContext.cs" />
     <Compile Include="EFQuicklistDAO.cs" />
     <Compile Include="EFPersonDAO.cs" />
-    <Compile Include="Migrations\201702212105354_create.cs" />
-    <Compile Include="Migrations\201702212105354_create.Designer.cs">
-      <DependentUpon>201702212105354_create.cs</DependentUpon>
+    <Compile Include="Migrations\201702261248570_first.cs" />
+    <Compile Include="Migrations\201702261248570_first.Designer.cs">
+      <DependentUpon>201702261248570_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IDAL\IDAL.csproj">
@@ -72,8 +68,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201702212105354_create.resx">
-      <DependentUpon>201702212105354_create.cs</DependentUpon>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702261248570_first.resx">
+      <DependentUpon>201702261248570_first.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

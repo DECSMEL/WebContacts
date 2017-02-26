@@ -66,10 +66,14 @@
     <Compile Include="ResultsModel\OneResult.cs" />
     <Compile Include="ResultsModel\Result.cs" />
     <Compile Include="Services\ContactSevice.cs" />
+    <Compile Include="Converters\ConverterContactToPerson.cs" />
+    <Compile Include="Converters\ConverterPersonToContact.cs" />
     <Compile Include="ViewModel\ContactVM.cs" />
     <Compile Include="ViewModel\ContactEditM.cs" />
     <Compile Include="Unity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\PhoneTypeVM.cs" />
     <Compile Include="ViewModel\PhoneVM.cs" />
     <Compile Include="ViewModel\PhotoVM.cs" />
     <Compile Include="ViewModel\QuickListVM.cs" />
@@ -81,9 +85,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
@@ -91,7 +92,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y /d  "$(ProjectDir)..\EFDAL\bin\Debug\EFDAL.dll" "$(ProjectDir)$(OutDir)"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

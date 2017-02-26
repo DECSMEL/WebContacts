@@ -69,7 +69,6 @@ namespace EFDAL.Tests
             Person pers = dao.GetById(pers1Id);
             pers.FirstName = "New1";
             pers.Phones.First().Number = "0000";
-            pers.Quicklist.First().Name = "Frends";
             pers.Photo.ImageMimeType = "text";
             pers.Phones.Add(new Phone() { Number = "0000", PersonId = pers.PersonId });
             dao.Update(pers);

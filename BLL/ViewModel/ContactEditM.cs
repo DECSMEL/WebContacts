@@ -12,10 +12,10 @@ namespace BLL.ViewModel
     {
         public int PersonId { get; set; }
         [Required, StringLength(100)]
-        [RegularExpression("^([\\w\\.\\-] +)@([\\w\\-] +)((\\.(\\w){2, 3})+)$")]
+//        [RegularExpression("^([\\w\\.\\-] +)@([\\w\\-] +)((\\.(\\w){2, 3})+)$")]
         public string Email { get; set; }
         [Required, StringLength(50)]
-        [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")]
+ //       [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")]
         public string Password { get; set; }
         [DisplayName("First name"), StringLength(50)]
         public string FirstName { get; set; }
