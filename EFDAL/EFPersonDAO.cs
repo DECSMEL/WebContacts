@@ -33,26 +33,23 @@ namespace EFDAL
             }
         }
 
-        public IEnumerable<Person> Find(string lastName)
+        public Person GetByEmail(string email)
         {
             using (var context = new DBContext())
             {
-                var persons = context.Persons.Where(m => m.LastName.Contains(lastName));
+                return context.Persons.Single(m => m.Email == email);
+            }
+        }
+
+        public IEnumerable<Person> FindByLastName(string lastName)
+        {
+            using (var context = new DBContext())
+            {
+                var persons = context.Persons.Include(p => p.Phones)
+                                     .Where(m => m.LastName.Contains(lastName));
                 return persons.ToList();
             }
         }
-
-        public bool PasswordCheck(string email, string password)
-        {
-            bool userValid = false;
-            using (var context = new DBContext())
-            {
-                userValid  = context.Persons.Any(p => p.Email == email && p.Password == password);
-            }
-            return userValid;
-        }
-
-
 
         public bool Create(Person person)
         {
@@ -70,7 +67,10 @@ namespace EFDAL
             {
                 context.Persons.Attach(person);
                 context.Entry(person).State = EntityState.Modified;
-                context.Entry(person.Photo).State = EntityState.Modified;
+                if(person.Photo != null)
+                {
+                    context.Entry(person.Photo).State = EntityState.Modified;
+                }
                 foreach (Phone phone in person.Phones)
                 {
                     if (phone.PhoneId != 0)
@@ -108,6 +108,26 @@ namespace EFDAL
                 context.SaveChanges();
             }
             return true;
+        }
+
+        public bool PasswordCheck(string email, string password)
+        {
+            bool userValid = false;
+            using (var context = new DBContext())
+            {
+                userValid = context.Persons.Any(p => p.Email == email && p.Password == password);
+            }
+            return userValid;
+        }
+
+        public bool EmailIsUsed(string email)
+        {
+            bool emailIsUsed = true;
+            using (var context = new DBContext())
+            {
+                emailIsUsed = context.Persons.Any(p => p.Email == email);
+            }
+            return emailIsUsed;
         }
     }
                 

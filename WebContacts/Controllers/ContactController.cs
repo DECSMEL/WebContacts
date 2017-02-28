@@ -12,7 +12,7 @@ namespace WebContacts.Controllers
 {
     public class ContactController : Controller
     {
-
+        [HttpGet]
         public ActionResult Login()
         {
             return View("Login");
@@ -27,10 +27,12 @@ namespace WebContacts.Controllers
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, false);
+                    int id = ContactSevice.GetIdByEmail(model.Email);
+                    Response.SetCookie(new HttpCookie("user", id.ToString()));
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", ResourceUI.FailLogin);
                     return View("Login");
                 }
             }
@@ -47,7 +49,49 @@ namespace WebContacts.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpGet]
+        public ActionResult Register()
+        {
+            var contact = new ContactEditM();
+            return View("Register", contact);
 
+        }
+
+        [HttpPost]
+        public ActionResult Register(ContactEditM model)
+        {
+            if (ModelState.IsValid)
+            {
+                ContactSevice.Create(model);
+                FormsAuthentication.SetAuthCookie(model.Email, false);
+                var userCookie = new HttpCookie("user", ContactSevice.GetIdByEmail(model.Email).ToString());
+                Response.SetCookie(userCookie);
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.RegisterFail;
+                return View("Error");
+            }
+            return RedirectToAction("All");
+        }
+
+        public ActionResult VerifyEmail(string email)
+        {
+            if (ContactSevice.EmailIsUsed(email))
+            {
+                return Json($"Email {email} is already in use.", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddNewPhone()
+        {
+            var phone = new PhoneVM();
+            return PartialView("~/Views/Shared/EditorTemplates/PhoneVM.cshtml", phone);
+        }
+
+        [Authorize]
         public ActionResult All()
         {
             ListResult<ContactVM> contacts = ContactSevice.GetAllContacts();
@@ -57,10 +101,28 @@ namespace WebContacts.Controllers
             }
             else
             {
-                return View("Error", contacts.Message);
+                ViewBag.Message = contacts.Message;
+                return View("Error");
             }
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult FindByLastName(string lastName)
+        {
+            ListResult<ContactVM> contacts = ContactSevice.FindByLastName(lastName);
+            if (contacts.IsOk)
+            {
+                return View("All", contacts.ListData);
+            }
+            else
+            {
+                ViewBag.Message = contacts.Message;
+                return View("Error");
+            }
+        }
+
+        [Authorize]
         public ActionResult Details(int id)
         {
             OneResult<ContactVM> contact = ContactSevice.GetContactDetails(id);
@@ -70,23 +132,40 @@ namespace WebContacts.Controllers
             }
             else
             {
-                return View("Error", contact.Message);
+                ViewBag.Message = contact.Message;
+                return View("Error");
             };
         }
 
+        [Authorize]
         [HttpGet]
-        public ActionResult Register()
+        public ActionResult EditMyProfile()
         {
-            return View("Register");
-
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
+            {
+                return View("Edit", ContactSevice.GetContactForEdit(Int32.Parse(id)).Data);
+            }
+            else
+            {
+                ViewBag.Message = "Login please";
+                return View("Error");
+            }
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult Register(ContactEditM model)
+        public ActionResult EditMyProfile(ContactEditM model)
         {
-
-            ContactSevice.Create(model);
-
+            if (ModelState.IsValid)
+            {
+                ContactSevice.Edit(model);
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.EditFail;
+                return View("Error");
+            }
             return RedirectToAction("All");
         }
 

@@ -12,15 +12,29 @@ namespace BLL.Converters
     {
         public static ContactVM ForAllView(Person person)
         {
-            return new ContactVM(person.PersonId, person.FirstName, person.LastName,
+            return new ContactVM(person.PersonId, person.FirstName, person.LastName, person.Email,
                                                 ConvertListPhoneToVM(person.Phones));
         }
 
         public static ContactVM ForDetailView(Person person)
         {
-            return new ContactVM(person.PersonId, person.FirstName, person.LastName,
+            return new ContactVM(person.PersonId, person.FirstName, person.LastName, person.Email,
                                                 ConvertListPhoneToVM(person.Phones),
                                                 ConvertPhotoToPhotoVM(person.Photo));
+        }
+
+        public static ContactEditM ForEditView(Person person)
+        {
+            ContactEditM contact = new ContactEditM();
+            contact.PersonId = person.PersonId;
+            contact.Email = person.Email;
+            contact.Password = person.Password;
+            contact.PasswordValidation = person.Password;
+            contact.FirstName = person.FirstName;
+            contact.LastName = person.LastName;
+            contact.Phones = ConvertListPhoneToVM(person.Phones);
+            contact.Photo = ConvertPhotoToPhotoVM(person.Photo);
+            return contact;   
         }
 
         private static List<PhoneVM> ConvertListPhoneToVM(ICollection<Phone> phones)

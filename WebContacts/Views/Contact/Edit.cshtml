@@ -1,9 +1,10 @@
 ﻿@model BLL.ViewModel.ContactEditM
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Edit";
 }
-    <script type="text/javascript">
+
+<script type="text/javascript">
         $(function () {
             $('#addphone').on('click', function () {
                 $.ajax({
@@ -17,25 +18,21 @@
                 $(this).closest('.editorRow').remove();
             });
         });
-    </script>
+</script>
 
- 
-<h3>Registration Form</h3>
+
+<h3>Edit Profile</h3>
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @Html.HiddenFor(model => model.PersonId)
         <hr />
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email)
-            </div>
-        </div>
+
+        @Html.HiddenFor(model => model.PersonId)
+        @Html.HiddenFor(model => model.Email)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -54,6 +51,13 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
@@ -67,7 +71,7 @@
                 @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
-        </div>
+        </div>        
 
         <div id="new-Phone">
             @Html.EditorFor(m => m.Phones)
@@ -80,8 +84,13 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Update" class="btn btn-default" />
             </div>
-        </div>           
-</div>
+        </div>  
+
+    </div>
 }
+
+<div>
+    @Html.ActionLink("Back to List", "All")
+</div>

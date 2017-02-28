@@ -1,6 +1,7 @@
 ﻿using IDAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,9 @@ namespace BLL.ViewModel
     {
         public int PhoneId { get; set; }
         public PhoneTypeVM Type { get; set; }
-        [StringLength(50)]
-        [RegularExpression("^\\+[1-9]{1}[0-9]{3,20}$")]
+        [Required]
+        [Phone]
         public string Number { get; set; }
-        public int PersonId { get; set; }
-
-        
+        public int PersonId { get; set; }        
     }
 }

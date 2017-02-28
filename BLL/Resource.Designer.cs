@@ -61,7 +61,52 @@ namespace BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail during reading of contacts.
+        ///   Looks up a localized string similar to Please input correct email..
+        /// </summary>
+        internal static string EmailReq {
+            get {
+                return ResourceManager.GetString("EmailReq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string FailLogin {
+            get {
+                return ResourceManager.GetString("FailLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail during search of contact..
+        /// </summary>
+        internal static string FindContactFail {
+            get {
+                return ResourceManager.GetString("FindContactFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contacts have been found..
+        /// </summary>
+        internal static string FindContactSuccess {
+            get {
+                return ResourceManager.GetString("FindContactSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no contact with such last name in book yet..
+        /// </summary>
+        internal static string FindNone {
+            get {
+                return ResourceManager.GetString("FindNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fail during reading of contacts..
         /// </summary>
         internal static string GetAllContactFail {
             get {
@@ -70,7 +115,7 @@ namespace BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are not contacts in book yet.
+        ///   Looks up a localized string similar to There are not contacts in book yet..
         /// </summary>
         internal static string GetAllNone {
             get {
@@ -79,7 +124,7 @@ namespace BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfull read all contacts.
+        ///   Looks up a localized string similar to Successfull read all contacts..
         /// </summary>
         internal static string GetAllSuccess {
             get {
@@ -88,7 +133,7 @@ namespace BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fail during reading detail about contact.
+        ///   Looks up a localized string similar to Fail during reading detail about contact..
         /// </summary>
         internal static string GetDetailsFail {
             get {
@@ -97,11 +142,20 @@ namespace BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfull read detail about contact.
+        ///   Looks up a localized string similar to Successfull read detail about contact..
         /// </summary>
         internal static string GetDetailsSuccess {
             get {
                 return ResourceManager.GetString("GetDetailsSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please create password which contain minimum 1 digit and 1 letter. Password should be minimum 8 characters..
+        /// </summary>
+        internal static string PasswordReq {
+            get {
+                return ResourceManager.GetString("PasswordReq", resourceCulture);
             }
         }
     }

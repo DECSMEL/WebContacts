@@ -11,10 +11,12 @@ namespace IDAL
     {
         IEnumerable<Person> GetAll();
         Person GetById(int id);
-        IEnumerable<Person> Find(string lastName);
+        IEnumerable<Person> FindByLastName(string lastName);
+        Person GetByEmail(string email);
         bool Create(Person person);
         bool Update(Person person);
         bool Delete(int id);
         bool PasswordCheck(string email, string password);
+        bool EmailIsUsed(string email);
     }
 }

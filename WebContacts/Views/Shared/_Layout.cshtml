@@ -7,6 +7,9 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,16 +20,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Contact Net", "All", "Contact", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("All contact", "All", "Contact")</li>
-                    <li>@Html.ActionLink("Edit my profile", "Edit", "Contact")</li>                   
+                    <li>@Html.ActionLink("All contacts", "All", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("Edit my profile", "EditMyProfile", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Log out", "Logout", "Contact")</li>
-                </ul>
+                <ul class="nav navbar-nav navbar-left">                    
+                    <li>
+                    @using (Html.BeginForm("FindByLastName", "Contact"))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="search" name = "lastName" placeholder="Search by last name">
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    }
+                    </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Log out", "Logout", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    </ul>
             </div>
         </div>
     </div>

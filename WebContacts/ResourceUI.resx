@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailReq" xml:space="preserve">
-    <value>Please input correct email.</value>
+  <data name="EditFail" xml:space="preserve">
+    <value>Cannot proceed profile update.</value>
   </data>
   <data name="FailLogin" xml:space="preserve">
-    <value />
+    <value>The user name or password provided is incorrect.</value>
   </data>
-  <data name="FindContactFail" xml:space="preserve">
-    <value>Fail during search of contact.</value>
-  </data>
-  <data name="FindContactSuccess" xml:space="preserve">
-    <value>Contacts have been found.</value>
-  </data>
-  <data name="FindNone" xml:space="preserve">
-    <value>There are no contact with such last name in book yet.</value>
-  </data>
-  <data name="GetAllContactFail" xml:space="preserve">
-    <value>Fail during reading of contacts.</value>
-  </data>
-  <data name="GetAllNone" xml:space="preserve">
-    <value>There are not contacts in book yet.</value>
-  </data>
-  <data name="GetAllSuccess" xml:space="preserve">
-    <value>Successfull read all contacts.</value>
-  </data>
-  <data name="GetDetailsFail" xml:space="preserve">
-    <value>Fail during reading detail about contact.</value>
-  </data>
-  <data name="GetDetailsSuccess" xml:space="preserve">
-    <value>Successfull read detail about contact.</value>
-  </data>
-  <data name="PasswordReq" xml:space="preserve">
-    <value>Please create password which contain minimum 1 digit and 1 letter. Password should be minimum 8 characters.</value>
+  <data name="RegisterFail" xml:space="preserve">
+    <value>Something wrong. Please repeat registration.</value>
   </data>
 </root>

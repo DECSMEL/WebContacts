@@ -19,6 +19,7 @@ namespace EFDAL.Tests
             Email = "decs@gmail.com",
             Password = "test1",
             Photo = new Photo() { ImageMimeType = "jpeg" },
+         
             Phones = new List<Phone>()
             {
                 new Phone() { Type = PhoneType.Work, Number = "1111"},
@@ -56,8 +57,8 @@ namespace EFDAL.Tests
         {
            dao.Create(person1);
            dao.Create(person2);
-           var pers1 = dao.Find("Che").FirstOrDefault();
-           var pers2 = dao.Find("Bird").FirstOrDefault();
+           var pers1 = dao.FindByLastName("Che").FirstOrDefault();
+           var pers2 = dao.FindByLastName("Bird").FirstOrDefault();
            Assert.IsNotNull(pers1);
            Assert.IsNotNull(pers2);
         }
@@ -65,11 +66,11 @@ namespace EFDAL.Tests
         [TestMethod()]
         public void UpdateTest()
         {
-            int pers1Id = dao.Find("Che").First().PersonId;
+            int pers1Id = dao.FindByLastName("Che").First().PersonId;
             Person pers = dao.GetById(pers1Id);
             pers.FirstName = "New1";
             pers.Phones.First().Number = "0000";
-            pers.Photo.ImageMimeType = "text";
+            pers.Photo = null;
             pers.Phones.Add(new Phone() { Number = "0000", PersonId = pers.PersonId });
             dao.Update(pers);
             Person newPers = dao.GetById(pers1Id);
@@ -80,12 +81,12 @@ namespace EFDAL.Tests
         [TestMethod()]
         public void DeleteTest()
         {
-            int pers1Id = dao.Find("Che").First().PersonId;
-            int pers2Id = dao.Find("Bird").First().PersonId;
+            int pers1Id = dao.FindByLastName("Che").First().PersonId;
+            int pers2Id = dao.FindByLastName("Bird").First().PersonId;
             dao.Delete(pers1Id);
             dao.Delete(pers2Id);
-            var pers1 = dao.Find("Che").FirstOrDefault();
-            var pers2 = dao.Find("Bird").FirstOrDefault();
+            var pers1 = dao.FindByLastName("Che").FirstOrDefault();
+            var pers2 = dao.FindByLastName("Bird").FirstOrDefault();
             Assert.IsNull(pers1);
             Assert.IsNull(pers2);
         }
