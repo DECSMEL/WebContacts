@@ -58,7 +58,7 @@ namespace BLL.Converters
             };
         }
 
-        private static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
+        public static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
         {
             if (photo != null)
             {

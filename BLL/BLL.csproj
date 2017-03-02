@@ -69,6 +69,8 @@
     <Compile Include="Services\ContactSevice.cs" />
     <Compile Include="Converters\ConverterContactToPerson.cs" />
     <Compile Include="Converters\ConverterPersonToContact.cs" />
+    <Compile Include="Services\QuicklistService.cs" />
+    <Compile Include="Services\PhotoService.cs" />
     <Compile Include="ViewModel\ContactVM.cs" />
     <Compile Include="ViewModel\ContactEditM.cs" />
     <Compile Include="Unity.cs" />

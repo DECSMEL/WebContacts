@@ -9,7 +9,7 @@ using IDAL.Entities;
 
 namespace EFDAL
 {
-    public class EFQuicklistDAO : IQuicklistDAO
+    public class QuicklistDAO : IQuicklistDAO
     {
         private DBContext context;
 
@@ -38,6 +38,9 @@ namespace EFDAL
             }
         }
 
-       
+        public bool RemoveFromQuicklist(int listId, int personId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

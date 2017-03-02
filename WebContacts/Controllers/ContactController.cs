@@ -15,6 +15,7 @@ namespace WebContacts.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            ViewBag.Login = ResourceUI.LoginInv;
             return View("Login");
         }
 
@@ -32,7 +33,7 @@ namespace WebContacts.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", ResourceUI.FailLogin);
+                    ViewBag.Login = ResourceUI.FailLogin;
                     return View("Login");
                 }
             }
@@ -58,10 +59,19 @@ namespace WebContacts.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(ContactEditM model)
+        public ActionResult Register(ContactEditM model, HttpPostedFileBase image = null)
         {
             if (ModelState.IsValid)
             {
+                if (image != null)
+                {
+                    model.Photo = new PhotoVM();
+                    model.Photo.ImageMimeType = image.ContentType;
+                    model.Photo.IsPrivate = false;
+                    model.Photo.ImageData = new byte[image.ContentLength];
+                    image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
+                }
+
                 ContactSevice.Create(model);
                 FormsAuthentication.SetAuthCookie(model.Email, false);
                 var userCookie = new HttpCookie("user", ContactSevice.GetIdByEmail(model.Email).ToString());
@@ -168,6 +178,20 @@ namespace WebContacts.Controllers
             }
             return RedirectToAction("All");
         }
+
+        [Authorize]
+        public FileContentResult GetPhoto(int contactId)
+        {
+            OneResult<PhotoVM> photo = PhotoService.GetPhotoById(contactId);
+            if (photo.IsOk)
+            {
+                return File(photo.Data.ImageData, photo.Data.ImageMimeType);
+            }
+            else
+            {
+                return null;
+            };   
+        }               
 
     }
 }

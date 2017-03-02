@@ -12,9 +12,11 @@ namespace BLL.ViewModel
     public class PhoneVM
     {
         public int PhoneId { get; set; }
+        [DisplayName("Phone type")]
         public PhoneTypeVM Type { get; set; }
         [Required]
         [Phone]
+        [DisplayName("Phone Number")]
         public string Number { get; set; }
         public int PersonId { get; set; }        
     }

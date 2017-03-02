@@ -121,7 +121,10 @@
     <value>Cannot proceed profile update.</value>
   </data>
   <data name="FailLogin" xml:space="preserve">
-    <value>The user name or password provided is incorrect.</value>
+    <value>The user name or password provided is incorrect. Please try again.</value>
+  </data>
+  <data name="LoginInv" xml:space="preserve">
+    <value>Please login.</value>
   </data>
   <data name="RegisterFail" xml:space="preserve">
     <value>Something wrong. Please repeat registration.</value>

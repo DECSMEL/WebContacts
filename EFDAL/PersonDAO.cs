@@ -9,7 +9,7 @@ using IDAL.Entities;
 
 namespace EFDAL
 {
-    public class EFRersonDAO : IPersonDAO
+    public class RersonDAO : IPersonDAO
     {
 
         public IEnumerable<Person> GetAll()

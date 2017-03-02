@@ -52,8 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBContext.cs" />
-    <Compile Include="EFQuicklistDAO.cs" />
-    <Compile Include="EFPersonDAO.cs" />
+    <Compile Include="PhotoDAO.cs" />
+    <Compile Include="QuicklistDAO.cs" />
+    <Compile Include="PersonDAO.cs" />
     <Compile Include="Migrations\201702271807092_create.cs" />
     <Compile Include="Migrations\201702271807092_create.Designer.cs">
       <DependentUpon>201702271807092_create.cs</DependentUpon>

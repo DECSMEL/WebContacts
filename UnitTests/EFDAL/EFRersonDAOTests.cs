@@ -19,7 +19,7 @@ namespace EFDAL.Tests
             Email = "decs@gmail.com",
             Password = "test1",
             Photo = new Photo() { ImageMimeType = "jpeg" },
-         
+
             Phones = new List<Phone>()
             {
                 new Phone() { Type = PhoneType.Work, Number = "1111"},
@@ -49,18 +49,18 @@ namespace EFDAL.Tests
             }
         };
 
-        private EFRersonDAO dao = new EFRersonDAO();
+        private RersonDAO dao = new RersonDAO();
 
 
         [TestMethod()]
         public void CreateTest()
         {
-           dao.Create(person1);
-           dao.Create(person2);
-           var pers1 = dao.FindByLastName("Che").FirstOrDefault();
-           var pers2 = dao.FindByLastName("Bird").FirstOrDefault();
-           Assert.IsNotNull(pers1);
-           Assert.IsNotNull(pers2);
+            dao.Create(person1);
+            dao.Create(person2);
+            var pers1 = dao.FindByLastName("Che").FirstOrDefault();
+            var pers2 = dao.FindByLastName("Bird").FirstOrDefault();
+            Assert.IsNotNull(pers1);
+            Assert.IsNotNull(pers2);
         }
 
         [TestMethod()]

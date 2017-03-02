@@ -70,11 +70,20 @@ namespace WebContacts {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user name or password provided is incorrect..
+        ///   Looks up a localized string similar to The user name or password provided is incorrect. Please try again..
         /// </summary>
         internal static string FailLogin {
             get {
                 return ResourceManager.GetString("FailLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please login..
+        /// </summary>
+        internal static string LoginInv {
+            get {
+                return ResourceManager.GetString("LoginInv", resourceCulture);
             }
         }
         

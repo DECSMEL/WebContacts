@@ -11,6 +11,7 @@ namespace IDAL
     {
         Quicklist GetQuicklist(int id);
         bool AddToQuicklist(int listId, int personId);
+        bool RemoveFromQuicklist(int listId, int personId);
 
     }
 }

@@ -27,7 +27,7 @@ namespace BLL.Converters
                     ph.Person = person;
                 }
             }
-            if (person.Photo != null)
+            if (contact.Photo != null)
             {
                 person.Photo = ConvertPhotoVMtoPhoto(contact.Photo);
                 person.Photo.Person = person;

@@ -10,6 +10,15 @@
     <hr />
     <dl class="dl-horizontal">
 
+        <dd>
+            @if (Model.Photo != null && Model.Photo.ImageData != null)
+            {
+                <div class="pull-left" style="margin-right: 10px">
+                    <img class="img-thumbnail" width="200" height="200"
+                         src="@Url.Action("GetPhoto", "Contact", new { Model.ContactId })" />
+                </div>
+            }
+        </dd> 
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -44,6 +53,9 @@
             @Html.DisplayFor(ph => phone.Number)
         </dd>
         }
+
+
+       
 
     </dl>
 </div>
