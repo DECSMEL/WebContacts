@@ -1,7 +1,7 @@
 ﻿@model BLL.ViewModel.ContactEditM
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Profile";
 }
 
 <script type="text/javascript">
@@ -15,16 +15,16 @@
                 });
             });
             $("#deleteRow").on('click', '.deleteRow', function () {
-                $(this).closest('.editorRow').remove();
+                $(this).closest('.phoneRow').remove();
             });
         });
 </script>
 
 
-<h3>Edit Profile</h3>
+<h3>Edit Profile:</h3>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditProfile", "Contact", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -33,20 +33,37 @@
 
         @Html.HiddenFor(model => model.PersonId)
         @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.Password)
+        @Html.HiddenFor(model => model.PasswordValidation)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password)
+        @if (Model.Photo != null && Model.Photo.ImageData != null)
+        {
+            @Html.HiddenFor(model => model.Photo.PhotoId)
+            @Html.HiddenFor(model => model.Photo.ImageMimeType)
+            @Html.HiddenFor(model => model.Photo.ImageData)
+
+            var base64 = Convert.ToBase64String(Model.Photo.ImageData);
+            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            <img class="img-thumbnail" width="200" height="200" src="@imgSrc" />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Photo.IsPrivate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(model => model.Photo.IsPrivate, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
             </div>
-        </div>
+        }
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PasswordValidation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2">Update photo</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PasswordValidation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PasswordValidation)
+                <a class="btn btn-default" href="javascript:;">
+                    Choose File...
+                    <input type="file" name="image" size="40"
+                           style="position:absolute;z-index:2;top:0;left:0; filter: alpha(opacity= 0); opacity:0;background-color:transparent;color:transparent;"
+                           onchange='$("#upload-file-info").html($(this).val());' />
+                </a>
+                <span class='label label-info' id="upload-file-info"></span>
             </div>
         </div>
 
@@ -71,7 +88,7 @@
                 @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LastName)
             </div>
-        </div>        
+        </div>
 
         <div id="new-Phone">
             @Html.EditorFor(m => m.Phones)
@@ -86,8 +103,14 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Update" class="btn btn-default" />
             </div>
-        </div>  
+        </div>
 
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Delete My Profile", "DeleteMyProfile", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
     </div>
 }
 

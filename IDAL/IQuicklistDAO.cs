@@ -9,9 +9,13 @@ namespace IDAL
 {
     public interface IQuicklistDAO
     {
-        Quicklist GetQuicklist(int id);
-        bool AddToQuicklist(int listId, int personId);
-        bool RemoveFromQuicklist(int listId, int personId);
+        Quicklist GetById(int listId);
 
+        bool Create(int personId);
+
+        bool AddToQuicklist(int listId, int personId);
+
+        bool RemoveFromQuicklist(int listId, int personId);
+        
     }
 }

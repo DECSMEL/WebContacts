@@ -37,9 +37,9 @@ namespace BLL.Converters
 
         }
 
-        private static ICollection<Phone> ConvertListPhoneVMtoPhones(IList<PhoneVM> vmPhones)
+        private static IList<Phone> ConvertListPhoneVMtoPhones(IList<PhoneVM> vmPhones)
         {
-            List<Phone> newPhones = new List<Phone>();
+            IList<Phone> newPhones = new List<Phone>();
             foreach (PhoneVM ph in vmPhones)
             {
                 newPhones.Add(ConvertPhoneVMtoPhone(ph));

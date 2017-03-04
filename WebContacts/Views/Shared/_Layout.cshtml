@@ -10,6 +10,7 @@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -24,7 +25,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("All contacts", "All", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    <li>@Html.ActionLink("Edit my profile", "EditMyProfile", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("Edit my profile", "EditProfile", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("My favorite contacts", "GetFavoriteContacts", "Quicklist", new { area = "" }, new { @class = "navbar-brand" })</li>
+
                 </ul>
                 <ul class="nav navbar-nav navbar-left">                    
                     <li>
@@ -32,7 +35,7 @@
                     {
                         @Html.AntiForgeryToken()
                         <input type="search" name = "lastName" placeholder="Search by last name">
-                        <input type="submit" value="Search" class="btn btn-default" />
+                        <input type="submit" value="Search"/>
                     }
                     </li>
                     </ul>

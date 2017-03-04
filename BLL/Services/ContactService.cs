@@ -12,26 +12,31 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ContactSevice
+    public class ContactService
     {
-        private static IPersonDAO personDao = Unity.Container.Resolve<IPersonDAO>();
+        private IPersonDAO personDao = Unity.Container.Resolve<IPersonDAO>();
 
-        public static bool PasswordCheck(string email, string password)
+        public bool PasswordCheck(string email, string password)
         {
             return personDao.PasswordCheck(email, password);
         }
 
-        public static bool EmailIsUsed(string email)
+        public bool PasswordCheck(int id, string password)
+        {
+            return personDao.PasswordCheck(id, password);
+        }
+
+        public bool EmailIsUsed(string email)
         {
             return personDao.EmailIsUsed(email);
         }
 
-        public static int GetIdByEmail(string email)
+        public int GetIdByEmail(string email)
         {
             return personDao.GetByEmail(email).PersonId;
         }
 
-        public static ListResult<ContactVM> GetAllContacts()
+        public ListResult<ContactVM> GetAllContacts()
         {
             ListResult<ContactVM> contacts = new ListResult<ContactVM>();
             try
@@ -61,52 +66,7 @@ namespace BLL.Services
             return contacts;
         }
 
-        public static OneResult<ContactVM> GetContactDetails(int id)
-        {
-            OneResult<ContactVM> contact = new OneResult<ContactVM>();
-            try
-            {
-                Person person = personDao.GetById(id);
-                if (person != null)
-                {
-                    contact.Data = ConverterPersonToContact.ForDetailView(person);
-                    contact.IsOk = true;
-                    contact.Message = Resource.GetDetailsSuccess;
-                }
-            }
-            catch (Exception)
-            {
-                //TO DO logging
-                contact.IsOk = false;
-                contact.Message = Resource.GetDetailsFail;
-            }
-            return contact;
-        }
-
-        public static OneResult<ContactEditM> GetContactForEdit(int id)
-        {
-            OneResult<ContactEditM> contact = new OneResult<ContactEditM>();
-            try
-            {
-                Person person = personDao.GetById(id);
-                if (person != null)
-                {
-                    contact.Data = ConverterPersonToContact.ForEditView(person);
-                    contact.IsOk = true;
-                    contact.Message = Resource.GetDetailsSuccess;
-                }
-            }
-            catch (Exception)
-            {
-                //TO DO logging
-                contact.IsOk = false;
-                contact.Message = Resource.GetDetailsFail;
-            }
-            return contact;
-
-        }
-
-        public static ListResult<ContactVM> FindByLastName(string lastName)
+        public ListResult<ContactVM> FindByLastName(string lastName)
         {
             ListResult<ContactVM> contacts = new ListResult<ContactVM>();
             try
@@ -137,13 +97,57 @@ namespace BLL.Services
             return contacts;
         }
 
-        public static bool Create(ContactEditM contact)
+        public OneResult<ContactVM> GetContactDetails(int id)
+        {
+            OneResult<ContactVM> contact = new OneResult<ContactVM>();
+            try
+            {
+                Person person = personDao.GetById(id);
+                if (person != null)
+                {
+                    contact.Data = ConverterPersonToContact.ForDetailView(person);
+                    contact.IsOk = true;
+                    contact.Message = Resource.GetDetailsSuccess;
+                }
+            }
+            catch (Exception)
+            {
+                //TO DO logging
+                contact.IsOk = false;
+                contact.Message = Resource.GetDetailsFail;
+            }
+            return contact;
+        }
+
+        public OneResult<ContactEditM> GetContactForEdit(int id)
+        {
+            OneResult<ContactEditM> contact = new OneResult<ContactEditM>();
+            try
+            {
+                Person person = personDao.GetById(id);
+                if (person != null)
+                {
+                    contact.Data = ConverterPersonToContact.ForEditView(person);
+                    contact.IsOk = true;
+                    contact.Message = Resource.GetDetailsSuccess;
+                }
+            }
+            catch (Exception)
+            {
+                //TO DO logging
+                contact.IsOk = false;
+                contact.Message = Resource.GetDetailsFail;
+            }
+            return contact;
+
+        }
+
+        public bool Create(ContactEditM contact)
         {
             try
             {
-                Person person = ConverterContactToPerson.ForNewSave(contact);
-                personDao.Create(person);
-                return true;
+                Person person = ConverterContactToPerson.ForNewSave(contact);                
+                return personDao.Create(person);
             }
             catch (Exception ex)
             {
@@ -152,13 +156,25 @@ namespace BLL.Services
             }
         }
 
-        public static bool Edit(ContactEditM contact)
+        public bool Edit(ContactEditM contact)
         {
             try
             {
-                Person person = ConverterContactToPerson.ForNewSave(contact);
-                personDao.Update(person);
-                return true;
+                Person person = ConverterContactToPerson.ForNewSave(contact);                
+                return personDao.Update(person);
+            }
+            catch (Exception ex)
+            {
+                //TO DO logging
+                return false;
+            }
+        }
+
+        public bool Delete(int id)
+        {
+            try
+            {                
+                return personDao.Delete(id);
             }
             catch (Exception ex)
             {

@@ -1,10 +1,10 @@
 ﻿@model BLL.ViewModel.PhoneVM
 @using HtmlHelpers.BeginCollectionItem
 
-<div id="phoneRow" class="phoneRow">
+@using (Html.BeginCollectionItem("Phones"))
+{
+    <div id="phoneRow" class="phoneRow">
 
-    @using (Html.BeginCollectionItem("Phones"))
-    {
         @Html.HiddenFor(model => model.PhoneId)
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -20,10 +20,15 @@
                 @Html.ValidationMessageFor(model => model.Number)
             </div>
         </div>
-    }
 
-    <a href="#" id="deleteRow" class="deleteRow" onclick="deleteFunction()">Delete</a>
-</div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="#" id="deleteRow" class="deleteRow" onclick="deleteFunction()">Delete Phone</a>
+            </div>
+        </div>
+
+    </div>
+}
 
 
 

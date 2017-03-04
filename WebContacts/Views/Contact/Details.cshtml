@@ -13,9 +13,12 @@
         <dd>
             @if (Model.Photo != null && Model.Photo.ImageData != null)
             {
+                var base64 = Convert.ToBase64String(Model.Photo.ImageData);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
                 <div class="pull-left" style="margin-right: 10px">
-                    <img class="img-thumbnail" width="200" height="200"
-                         src="@Url.Action("GetPhoto", "Contact", new { Model.ContactId })" />
+                    <img class="img-thumbnail" width="300" height="300"
+                         src="@imgSrc" />
                 </div>
             }
         </dd> 
@@ -39,27 +42,25 @@
         </dd>
 
         @foreach (var phone in Model.Phones)
-        { 
-        <dt>
-            @Html.DisplayNameFor(ph => phone.Type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(ph => phone.Type)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(ph => phone.Number)
-        </dt>
-        <dd>
-            @Html.DisplayFor(ph => phone.Number)
-        </dd>
+        {
+            <dt>
+                @Html.DisplayNameFor(ph => phone.Type)
+            </dt>
+            <dd>
+                @Html.DisplayFor(ph => phone.Type)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(ph => phone.Number)
+            </dt>
+            <dd>
+                @Html.DisplayFor(ph => phone.Number)
+            </dd>
         }
-
-
-       
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "All")
+    @Html.ActionLink("Add to favorite", "AddToFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Remove from favorite", "RemoveFromFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back to all List", "All", null, new { @class = "btn btn-default" })
 </p>
 

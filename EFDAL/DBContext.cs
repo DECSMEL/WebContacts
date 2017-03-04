@@ -51,6 +51,8 @@ namespace EFDAL
             //Quiclist settings 
             modelBuilder.Entity<Quicklist>().Property(p => p.Name)
                                        .HasMaxLength(30);
+            modelBuilder.Entity<Quicklist>().Property(p => p.QuicklistId)
+                                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
         }
     }
 }

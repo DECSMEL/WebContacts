@@ -11,12 +11,12 @@ namespace BLL.ViewModel
     {
         public QuickListVM()
         {
-            FavoritePersons = new HashSet<ContactVM>();
+            FavoritePersons = new List<ContactVM>();
         }
 
         public int QuicklistId { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
-        public ICollection<ContactVM> FavoritePersons { get; set;}
+        public IList<ContactVM> FavoritePersons { get; set;}
     }
 }

@@ -11,7 +11,7 @@ namespace IDAL.Entities
         public Person()
         {
             Phones = new List<Phone>();
-            Quicklist = new HashSet<Quicklist>();
+            Quicklist = new List<Quicklist>();
         }
 
         public int PersonId { get; set; }
@@ -19,9 +19,9 @@ namespace IDAL.Entities
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public virtual ICollection<Phone> Phones { get; set; }
+        public virtual IList<Phone> Phones { get; set; }
         public virtual Photo Photo { get; set; }
-        public virtual ICollection<Quicklist> Quicklist { get; set; }
+        public virtual IList<Quicklist> Quicklist { get; set; }
 
     }
 }

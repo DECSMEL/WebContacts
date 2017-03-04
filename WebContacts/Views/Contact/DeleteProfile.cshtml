@@ -1,0 +1,39 @@
+﻿@model BLL.ViewModel.DeleteVM
+@{
+    ViewBag.Title = "DeleteProfile";
+}
+
+<h3>Confirm deleting profile</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                @ViewBag.Message
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Confirm delete" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+<p>
+    @Html.ActionLink("Back to List", "All")
+</p>
+

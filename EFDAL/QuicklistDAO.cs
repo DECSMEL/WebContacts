@@ -11,19 +11,31 @@ namespace EFDAL
 {
     public class QuicklistDAO : IQuicklistDAO
     {
-        private DBContext context;
-
-        public Quicklist GetQuicklist(int id)
+        public Quicklist GetById(int listId)
         {
-            using (context = new DBContext())
+            using (var context = new DBContext())
             {
-                return context.Quicklists.Find(id);
+                return context.Quicklists.Include(p => p.Persons.Select(ph => ph.Phones))
+                                         .Where(l => l.QuicklistId == listId)
+                                         .SingleOrDefault();                                    
+
             }
+        }
+
+        public bool Create(int personId)
+        {
+            using (var context = new DBContext())
+            {
+                Quicklist list = new Quicklist() { QuicklistId = personId, Name = "Frends" };
+                context.Quicklists.Add(list);
+                context.SaveChanges();
+            }
+            return true;
         }
 
         public bool AddToQuicklist(int listId, int personId)
         {
-            using (context = new DBContext())
+            using (var context = new DBContext())
             {
                 Person person = new Person { PersonId = personId };
                 context.Persons.Attach(person);
@@ -34,13 +46,21 @@ namespace EFDAL
                 qlist.Persons.Add(person);
 
                 context.SaveChanges();
-                return true;
             }
+            return true;
         }
 
         public bool RemoveFromQuicklist(int listId, int personId)
         {
-            throw new NotImplementedException();
+            using (var context = new DBContext())
+            {
+                Person person = new Person { PersonId = personId };
+                context.Persons.Attach(person);
+                var list = context.Quicklists.Find(listId);
+                list.Persons.Remove(person);
+                context.SaveChanges();
+            }
+            return true;
         }
     }
 }

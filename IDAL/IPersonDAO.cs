@@ -9,14 +9,15 @@ namespace IDAL
 {
     public interface IPersonDAO
     {
-        IEnumerable<Person> GetAll();
+        IList<Person> GetAll();
+        IList<Person> FindByLastName(string lastName);
         Person GetById(int id);
-        IEnumerable<Person> FindByLastName(string lastName);
         Person GetByEmail(string email);
         bool Create(Person person);
         bool Update(Person person);
         bool Delete(int id);
         bool PasswordCheck(string email, string password);
+        bool PasswordCheck(int id, string password);
         bool EmailIsUsed(string email);
     }
 }

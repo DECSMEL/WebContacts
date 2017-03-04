@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace BLL.ViewModel
 {
-    public class LoginVM
+    public class DeleteVM
     {
-        [Required(ErrorMessageResourceName = "EmailNeed",
-                  ErrorMessageResourceType = typeof(Resource))]
-        public string Email { get; set; }
-
         [Required(ErrorMessageResourceName = "PasswordNeed",
                  ErrorMessageResourceType = typeof(Resource))]
         [StringLength(50)]

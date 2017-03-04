@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmailNeed" xml:space="preserve">
+    <value>Please fulfill feld with email.</value>
+  </data>
   <data name="EmailReq" xml:space="preserve">
     <value>Please input correct email.</value>
-  </data>
-  <data name="FailLogin" xml:space="preserve">
-    <value />
   </data>
   <data name="FindContactFail" xml:space="preserve">
     <value>Fail during search of contact.</value>
@@ -147,7 +147,22 @@
   <data name="GetDetailsSuccess" xml:space="preserve">
     <value>Successfull read detail about contact.</value>
   </data>
+  <data name="LoginFail" xml:space="preserve">
+    <value>Error </value>
+  </data>
+  <data name="PasswordNeed" xml:space="preserve">
+    <value>Please fulfill feld with password.</value>
+  </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>Confirm password does not match the password.</value>
+  </data>
   <data name="PasswordReq" xml:space="preserve">
     <value>Please create password which contain minimum 1 digit and 1 letter. Password should be minimum 8 characters.</value>
+  </data>
+  <data name="QuicklistEmpty" xml:space="preserve">
+    <value>You do not have any favorit contacts.</value>
+  </data>
+  <data name="QuicklistError" xml:space="preserve">
+    <value>Error during read favorit contacts.</value>
   </data>
 </root>

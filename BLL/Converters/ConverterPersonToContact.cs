@@ -28,18 +28,16 @@ namespace BLL.Converters
             ContactEditM contact = new ContactEditM();
             contact.PersonId = person.PersonId;
             contact.Email = person.Email;
-            contact.Password = person.Password;
-            contact.PasswordValidation = person.Password;
             contact.FirstName = person.FirstName;
             contact.LastName = person.LastName;
             contact.Phones = ConvertListPhoneToVM(person.Phones);
-            contact.Photo = ConvertPhotoToPhotoVM(person.Photo);
+            contact.Photo = ConvertPhotoToEditPhotoVM(person.Photo);
             return contact;   
         }
 
-        private static List<PhoneVM> ConvertListPhoneToVM(ICollection<Phone> phones)
+        private static IList<PhoneVM> ConvertListPhoneToVM(IList<Phone> phones)
         {
-            List<PhoneVM> newPhones = new List<PhoneVM>();
+            IList<PhoneVM> newPhones = new List<PhoneVM>();
             foreach (Phone ph in phones)
             {
                 newPhones.Add(ConvertPhoneToPhoneVM(ph));
@@ -58,7 +56,7 @@ namespace BLL.Converters
             };
         }
 
-        public static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
+        private static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
         {
             if (photo != null)
             {
@@ -71,6 +69,21 @@ namespace BLL.Converters
                 if (!photoView.IsPrivate) photoView.ImageData = photo.ImageData;
 
                 return photoView;
+            }
+            return null;
+        }
+
+        private static PhotoVM ConvertPhotoToEditPhotoVM(Photo photo)
+        {
+            if (photo != null)
+            {
+                return new PhotoVM()
+                {
+                    PhotoId = photo.PhotoId,
+                    IsPrivate = photo.IsPrivate,
+                    ImageMimeType = photo.ImageMimeType,
+                    ImageData = photo.ImageData
+                };                 
             }
             return null;
         }

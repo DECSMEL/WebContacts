@@ -10,11 +10,11 @@ namespace IDAL.Entities
     {
         public Quicklist()
         {
-            Persons = new HashSet<Person>();
+            Persons = new List<Person>();
         }
 
         public int QuicklistId { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Person> Persons { get; set; }
+        public virtual IList<Person> Persons { get; set; }
     }
 }

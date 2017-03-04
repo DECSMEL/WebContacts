@@ -15,25 +15,32 @@ namespace BLL.ViewModel
         {
             Phones = new List<PhoneVM>();
             QuickLists = new List<QuickListVM>();
+            QuickLists.Add(new QuickListVM() { Name = "Frends" });
         }
 
 
         public int PersonId { get; set; }
 
-        [Required, StringLength(100)]
+        [Required(ErrorMessageResourceName = "EmailNeed",
+                  ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(100)]
         [EmailAddress(ErrorMessageResourceName = "EmailReq",
                       ErrorMessageResourceType = typeof(Resource))]
         [Remote("VerifyEmail","Contact")]
         public string Email { get; set; }
 
-        [Required, StringLength(50)]
+        [Required(ErrorMessageResourceName = "PasswordNeed",
+                  ErrorMessageResourceType = typeof(Resource))]
+        [StringLength(50)]
         [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
                       ErrorMessageResourceName = "PasswordReq",
                       ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Compare("Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Password",
+                  ErrorMessageResourceName = "PasswordNotMatch",
+                  ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.Password)]
         [DisplayName("Confirm Password")]
         public string PasswordValidation { get; set; }

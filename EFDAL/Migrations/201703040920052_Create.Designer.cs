@@ -7,13 +7,13 @@ namespace EFDAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class create : IMigrationMetadata
+    public sealed partial class Create : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(create));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Create));
         
         string IMigrationMetadata.Id
         {
-            get { return "201702271807092_create"; }
+            get { return "201703040920052_Create"; }
         }
         
         string IMigrationMetadata.Source

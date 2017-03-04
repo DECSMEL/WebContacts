@@ -3,7 +3,7 @@ namespace EFDAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class create : DbMigration
+    public partial class Create : DbMigration
     {
         public override void Up()
         {
@@ -50,7 +50,7 @@ namespace EFDAL.Migrations
                 "dbo.Quicklists",
                 c => new
                     {
-                        QuicklistId = c.Int(nullable: false, identity: true),
+                        QuicklistId = c.Int(nullable: false),
                         Name = c.String(maxLength: 30),
                     })
                 .PrimaryKey(t => t.QuicklistId);

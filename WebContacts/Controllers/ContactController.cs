@@ -12,10 +12,13 @@ namespace WebContacts.Controllers
 {
     public class ContactController : Controller
     {
+        private ContactService contactService = new ContactService();
+
+        #region Login and Registration
         [HttpGet]
         public ActionResult Login()
         {
-            ViewBag.Login = ResourceUI.LoginInv;
+            ViewBag.Login = ResourceUI.LoginInvitation;
             return View("Login");
         }
 
@@ -24,11 +27,12 @@ namespace WebContacts.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool result = ContactSevice.PasswordCheck(model.Email, model.Password);
+                bool result = contactService.PasswordCheck(model.Email, model.Password);
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, false);
-                    int id = ContactSevice.GetIdByEmail(model.Email);
+
+                    int id = contactService.GetIdByEmail(model.Email);
                     Response.SetCookie(new HttpCookie("user", id.ToString()));
                 }
                 else
@@ -39,6 +43,7 @@ namespace WebContacts.Controllers
             }
             else
             {
+                ViewBag.Login = ResourceUI.LoginError;
                 return View("Login");
             }
             return RedirectToAction("All");
@@ -53,7 +58,10 @@ namespace WebContacts.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            var contact = new ContactEditM();
+            var contact = new ContactEditM()
+            {
+                Photo = new PhotoVM()
+            };
             return View("Register", contact);
 
         }
@@ -65,16 +73,14 @@ namespace WebContacts.Controllers
             {
                 if (image != null)
                 {
-                    model.Photo = new PhotoVM();
                     model.Photo.ImageMimeType = image.ContentType;
-                    model.Photo.IsPrivate = false;
                     model.Photo.ImageData = new byte[image.ContentLength];
                     image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
                 }
 
-                ContactSevice.Create(model);
+                contactService.Create(model);
                 FormsAuthentication.SetAuthCookie(model.Email, false);
-                var userCookie = new HttpCookie("user", ContactSevice.GetIdByEmail(model.Email).ToString());
+                var userCookie = new HttpCookie("user", contactService.GetIdByEmail(model.Email).ToString());
                 Response.SetCookie(userCookie);
             }
             else
@@ -87,7 +93,7 @@ namespace WebContacts.Controllers
 
         public ActionResult VerifyEmail(string email)
         {
-            if (ContactSevice.EmailIsUsed(email))
+            if (contactService.EmailIsUsed(email))
             {
                 return Json($"Email {email} is already in use.", JsonRequestBehavior.AllowGet);
             }
@@ -101,10 +107,14 @@ namespace WebContacts.Controllers
             return PartialView("~/Views/Shared/EditorTemplates/PhoneVM.cshtml", phone);
         }
 
+        #endregion
+
+        #region Information about another contacts 
+
         [Authorize]
         public ActionResult All()
         {
-            ListResult<ContactVM> contacts = ContactSevice.GetAllContacts();
+            ListResult<ContactVM> contacts = contactService.GetAllContacts();
             if (contacts.IsOk)
             {
                 return View("All", contacts.ListData);
@@ -120,7 +130,7 @@ namespace WebContacts.Controllers
         [HttpPost]
         public ActionResult FindByLastName(string lastName)
         {
-            ListResult<ContactVM> contacts = ContactSevice.FindByLastName(lastName);
+            ListResult<ContactVM> contacts = contactService.FindByLastName(lastName);
             if (contacts.IsOk)
             {
                 return View("All", contacts.ListData);
@@ -132,10 +142,11 @@ namespace WebContacts.Controllers
             }
         }
 
+
         [Authorize]
         public ActionResult Details(int id)
         {
-            OneResult<ContactVM> contact = ContactSevice.GetContactDetails(id);
+            OneResult<ContactVM> contact = contactService.GetContactDetails(id);
             if (contact.IsOk)
             {
                 return View("Details", contact.Data);
@@ -147,51 +158,108 @@ namespace WebContacts.Controllers
             };
         }
 
+        #endregion
+        
+        #region Work with Profile
+
         [Authorize]
         [HttpGet]
-        public ActionResult EditMyProfile()
+        public ActionResult EditProfile()
         {
             string id = Request.Cookies["user"].Value;
             if (id != null)
             {
-                return View("Edit", ContactSevice.GetContactForEdit(Int32.Parse(id)).Data);
+                OneResult<ContactEditM> contact = contactService.GetContactForEdit(Int32.Parse(id));
+                contact.Data.Password = "test1234";
+                contact.Data.PasswordValidation = "test1234";
+                if (contact.IsOk)
+                {
+                    return View("EditProfile", contact.Data);
+                }
+                else
+                {
+                    ViewBag.Message = contact.Message;
+                    return View("Error");
+                };
             }
             else
             {
-                ViewBag.Message = "Login please";
+                ViewBag.Message = ResourceUI.LoginInvitation;
                 return View("Error");
             }
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditMyProfile(ContactEditM model)
+        public ActionResult EditProfile(ContactEditM model, HttpPostedFileBase image = null)
         {
-            if (ModelState.IsValid)
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
             {
-                ContactSevice.Edit(model);
-            }
-            else
-            {
-                ViewBag.Message = ResourceUI.EditFail;
-                return View("Error");
+                if (ModelState.IsValid)
+                {
+                    if (image != null)
+                    {
+                        model.Photo.ImageMimeType = image.ContentType;
+                        model.Photo.ImageData = new byte[image.ContentLength];
+                        image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
+                    }
+                    contactService.Edit(model);
+                }
+                else
+                {
+                    ViewBag.Message = ResourceUI.EditFail;
+                    return View("Error");
+                }
             }
             return RedirectToAction("All");
         }
 
         [Authorize]
-        public FileContentResult GetPhoto(int contactId)
+        [HttpGet]
+        public ActionResult DeleteMyProfile()
         {
-            OneResult<PhotoVM> photo = PhotoService.GetPhotoById(contactId);
-            if (photo.IsOk)
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
             {
-                return File(photo.Data.ImageData, photo.Data.ImageMimeType);
+                ViewBag.Message = ResourceUI.DeleteConfirm;
+                return View("DeleteProfile");
             }
             else
             {
-                return null;
-            };   
-        }               
+                ViewBag.Message = ResourceUI.LoginError;
+                return View("Error");
+            }
+        }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult DeleteMyProfile(DeleteVM model)
+        {
+            string idStr = Request.Cookies["user"].Value;
+            if (idStr != null)
+            {
+                int id = Int32.Parse(idStr);
+                if (contactService.PasswordCheck(id, model.Password))
+                {
+                    contactService.Delete(id);
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    ViewBag.Message = ResourceUI.DeleteNotConfirm;
+                    return View("Delete");
+                }
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginError;
+                return View("Error");
+            }
+        }
+
+        #endregion
+
+        
     }
 }

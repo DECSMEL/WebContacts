@@ -11,8 +11,7 @@ namespace EFDAL
 {
     public class RersonDAO : IPersonDAO
     {
-
-        public IEnumerable<Person> GetAll()
+        public IList<Person> GetAll()
         {
             using (var context = new DBContext())
             {
@@ -21,27 +20,7 @@ namespace EFDAL
                 else return persons.ToList();
             }
         }
-
-        public Person GetById(int id)
-        {
-            using (var context = new DBContext())
-            {
-                Person person = context.Persons.Include(m => m.Phones)
-                                               .Include(m => m.Photo)
-                                               .SingleOrDefault(m => m.PersonId == id);
-                return person;
-            }
-        }
-
-        public Person GetByEmail(string email)
-        {
-            using (var context = new DBContext())
-            {
-                return context.Persons.Single(m => m.Email == email);
-            }
-        }
-
-        public IEnumerable<Person> FindByLastName(string lastName)
+        public IList<Person> FindByLastName(string lastName)
         {
             using (var context = new DBContext())
             {
@@ -50,7 +29,22 @@ namespace EFDAL
                 return persons.ToList();
             }
         }
-
+        public Person GetById(int id)
+        {
+            using (var context = new DBContext())
+            {
+                return context.Persons.Include(m => m.Phones)
+                                               .Include(m => m.Photo)
+                                               .SingleOrDefault(m => m.PersonId == id);
+            }
+        }
+        public Person GetByEmail(string email)
+        {
+            using (var context = new DBContext())
+            {
+                return context.Persons.Single(m => m.Email == email);
+            }
+        }
         public bool Create(Person person)
         {
             using (var context = new DBContext())
@@ -60,14 +54,15 @@ namespace EFDAL
             }
             return true;
         }
-
         public bool Update(Person person)
         {
             using (var context = new DBContext())
             {
                 context.Persons.Attach(person);
-                context.Entry(person).State = EntityState.Modified;
-                if(person.Photo != null)
+                var entry = context.Entry(person);
+                entry.Property(e => e.FirstName).IsModified = true;
+                entry.Property(e => e.LastName).IsModified = true;
+                if (person.Photo != null)
                 {
                     context.Entry(person.Photo).State = EntityState.Modified;
                 }
@@ -82,22 +77,10 @@ namespace EFDAL
                         context.Phones.Add(phone);
                     }
                 }
-                foreach (Quicklist ql in person.Quicklist)
-                {
-                    if (ql.QuicklistId != 0)
-                    {
-                        context.Entry(ql).State = EntityState.Modified;
-                    }
-                    else
-                    {
-                        context.Quicklists.Add(ql);
-                    }
-                }
                 context.SaveChanges();
             }
             return true;
         }
-
         public bool Delete(int id)
         {
             using (var context = new DBContext())
@@ -109,7 +92,6 @@ namespace EFDAL
             }
             return true;
         }
-
         public bool PasswordCheck(string email, string password)
         {
             bool userValid = false;
@@ -119,7 +101,15 @@ namespace EFDAL
             }
             return userValid;
         }
-
+        public bool PasswordCheck(int id, string password)
+        {
+            bool userValid = false;
+            using (var context = new DBContext())
+            {
+                userValid = context.Persons.Any(p => p.PersonId == id && p.Password == password);
+            }
+            return userValid;
+        }
         public bool EmailIsUsed(string email)
         {
             bool emailIsUsed = true;

@@ -45,7 +45,6 @@
     <Compile Include="Entities\PhoneType.cs" />
     <Compile Include="Entities\Photo.cs" />
     <Compile Include="Entities\Quicklist.cs" />
-    <Compile Include="IPhotoDAO.cs" />
     <Compile Include="IQuicklistDAO.cs" />
     <Compile Include="IPersonDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
