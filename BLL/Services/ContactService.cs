@@ -146,7 +146,7 @@ namespace BLL.Services
         {
             try
             {
-                Person person = ConverterContactToPerson.ForNewSave(contact);                
+                Person person = ConverterContactToPerson.ForSave(contact);                
                 return personDao.Create(person);
             }
             catch (Exception ex)
@@ -156,12 +156,12 @@ namespace BLL.Services
             }
         }
 
-        public bool Edit(ContactEditM contact)
+        public bool Edit(ContactEditM contact, bool withPhoto)
         {
             try
             {
-                Person person = ConverterContactToPerson.ForNewSave(contact);                
-                return personDao.Update(person);
+                Person person = ConverterContactToPerson.ForSave(contact);                
+                return personDao.Edit(person, withPhoto);
             }
             catch (Exception ex)
             {

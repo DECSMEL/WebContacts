@@ -14,7 +14,7 @@ namespace IDAL
         Person GetById(int id);
         Person GetByEmail(string email);
         bool Create(Person person);
-        bool Update(Person person);
+        bool Edit(Person person, bool withPhoto);
         bool Delete(int id);
         bool PasswordCheck(string email, string password);
         bool PasswordCheck(int id, string password);

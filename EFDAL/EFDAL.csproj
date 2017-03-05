@@ -56,6 +56,14 @@
     <Compile Include="Migrations\201703040920052_Create.Designer.cs">
       <DependentUpon>201703040920052_Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703051651094_birthday.cs" />
+    <Compile Include="Migrations\201703051651094_birthday.Designer.cs">
+      <DependentUpon>201703051651094_birthday.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703051935403_privateField.cs" />
+    <Compile Include="Migrations\201703051935403_privateField.Designer.cs">
+      <DependentUpon>201703051935403_privateField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="QuicklistDAO.cs" />
     <Compile Include="PersonDAO.cs" />
@@ -74,6 +82,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201703040920052_Create.resx">
       <DependentUpon>201703040920052_Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703051651094_birthday.resx">
+      <DependentUpon>201703051651094_birthday.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703051935403_privateField.resx">
+      <DependentUpon>201703051935403_privateField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

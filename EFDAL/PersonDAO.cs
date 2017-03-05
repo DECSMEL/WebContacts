@@ -34,8 +34,9 @@ namespace EFDAL
             using (var context = new DBContext())
             {
                 return context.Persons.Include(m => m.Phones)
-                                               .Include(m => m.Photo)
-                                               .SingleOrDefault(m => m.PersonId == id);
+                                      .Include(m => m.Photo)
+                                      .Include(b => b.BirthDay)
+                                      .SingleOrDefault(m => m.PersonId == id);
             }
         }
         public Person GetByEmail(string email)
@@ -54,33 +55,49 @@ namespace EFDAL
             }
             return true;
         }
-        public bool Update(Person person)
+        public bool Edit(Person person, bool withPhoto)
         {
             using (var context = new DBContext())
             {
-                context.Persons.Attach(person);
-                var entry = context.Entry(person);
-                entry.Property(e => e.FirstName).IsModified = true;
-                entry.Property(e => e.LastName).IsModified = true;
-                if (person.Photo != null)
+                
+                if (person.BirthDay != null && person.BirthDay.BirthDayId == 0)
                 {
-                    context.Entry(person.Photo).State = EntityState.Modified;
+                    person.BirthDay.BirthDayId = person.PersonId;
+                    context.Days.Add(person.BirthDay);
                 }
+
                 foreach (Phone phone in person.Phones)
                 {
-                    if (phone.PhoneId != 0)
-                    {
-                        context.Entry(phone).State = EntityState.Modified;
-                    }
-                    else
+                    if (phone.PhoneId == 0)
                     {
                         context.Phones.Add(phone);
                     }
+                    else
+                    {
+                        context.Entry(phone).State = EntityState.Modified;
+
+                    }
+                }
+
+                context.Persons.Attach(person);
+                var entry = context.Entry(person);
+                entry.State = EntityState.Modified;
+                entry.Property(e => e.Email).IsModified = false;
+                entry.Property(e => e.Password).IsModified = false;
+
+                if (withPhoto)
+                {
+                    context.Entry(person.Photo).State = EntityState.Modified;
+                }
+                else
+                {
+                    context.Entry(person.Photo).State = EntityState.Unchanged;
                 }
                 context.SaveChanges();
             }
             return true;
         }
+
         public bool Delete(int id)
         {
             using (var context = new DBContext())

@@ -50,6 +50,13 @@ namespace BLL.ViewModel
         [DisplayName("Last name"), StringLength(50)]
         public string LastName { get; set; }
         public PhotoVM Photo { get; set; }
+
+        [DisplayName("Hide photo ?")]
+        public bool IsPrivatePhoto { get; set; }
+        public BirthDayVM BirthDay { get; set; }
+
+        [DisplayName("Hide birthday ?")]
+        public bool IsPrivateBirthDay { get; set; }
         public IList<PhoneVM> Phones { get; set; }
         public IList<QuickListVM> QuickLists { get; set; }
 

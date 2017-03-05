@@ -11,9 +11,6 @@ namespace BLL.ViewModel
     public class PhotoVM
     {
         public int PhotoId { get; set; }
-
-        [DisplayName("Private photo ?")]
-        public bool IsPrivate { get; set; }
         public byte[] ImageData { get; set; }
         [StringLength(50)]
         public string ImageMimeType { get; set; }

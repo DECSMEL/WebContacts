@@ -17,13 +17,14 @@ namespace EFDAL
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Phone> Phones { get; set; }
         public virtual DbSet<Photo> Photos { get; set; }
+        public virtual DbSet<BirthDay> Days { get; set; }
         public virtual DbSet<Quicklist> Quicklists { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
 
-            //Person settings
+            #region Person settings
+
             modelBuilder.Entity<Person>().Property(p => p.Email)
                                          .IsRequired()
                                          .HasMaxLength(100)
@@ -36,23 +37,42 @@ namespace EFDAL
                                          .HasMaxLength(100);
             modelBuilder.Entity<Person>().Property(p => p.LastName)
                                          .HasMaxLength(100);
+            #endregion
 
-            //Photo settings
+            #region Phone settings
+
+            modelBuilder.Entity<Phone>().Property(p => p.Number)
+                                        .HasMaxLength(50);
+            #endregion
+
+            #region Photo settings
+
             modelBuilder.Entity<Photo>().Property(p => p.ImageMimeType)
                                         .HasMaxLength(50);
             //Photo one-to-one settings
             modelBuilder.Entity<Person>().HasOptional(p => p.Photo)
                             .WithRequired(ph => ph.Person).WillCascadeOnDelete();
 
-            //Phone settings
-            modelBuilder.Entity<Phone>().Property(p => p.Number)
-                                        .HasMaxLength(50);
+            #endregion
+
+            #region BirtDay settings
+
+            modelBuilder.Entity<BirthDay>().Property(p => p.Date)
+                                         .HasColumnType("Date");
+            //BirthDay one-to-one settings
+            modelBuilder.Entity<Person>().HasOptional(p => p.BirthDay)
+                            .WithRequired(d => d.Person).WillCascadeOnDelete();
+            #endregion
+
+            #region Quicklist settings
 
             //Quiclist settings 
             modelBuilder.Entity<Quicklist>().Property(p => p.Name)
                                        .HasMaxLength(30);
             modelBuilder.Entity<Quicklist>().Property(p => p.QuicklistId)
                                         .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            #endregion
         }
     }
 }

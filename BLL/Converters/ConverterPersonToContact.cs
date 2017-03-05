@@ -20,7 +20,8 @@ namespace BLL.Converters
         {
             return new ContactVM(person.PersonId, person.FirstName, person.LastName, person.Email,
                                                 ConvertListPhoneToVM(person.Phones),
-                                                ConvertPhotoToPhotoVM(person.Photo));
+                                                ConvertPhotoToPhotoVM(person.Photo, person.IsPrivatePhoto),
+                                                ConvertDayToDayVM(person.BirthDay, person.IsPrivateBirthDay));
         }
 
         public static ContactEditM ForEditView(Person person)
@@ -30,8 +31,11 @@ namespace BLL.Converters
             contact.Email = person.Email;
             contact.FirstName = person.FirstName;
             contact.LastName = person.LastName;
-            contact.Phones = ConvertListPhoneToVM(person.Phones);
             contact.Photo = ConvertPhotoToEditPhotoVM(person.Photo);
+            contact.IsPrivatePhoto = person.IsPrivatePhoto;
+            contact.BirthDay = ConvertDayToEditDayVM(person.BirthDay);
+            contact.IsPrivateBirthDay = person.IsPrivateBirthDay;
+            contact.Phones = ConvertListPhoneToVM(person.Phones);
             return contact;   
         }
 
@@ -56,17 +60,16 @@ namespace BLL.Converters
             };
         }
 
-        private static PhotoVM ConvertPhotoToPhotoVM(Photo photo)
+        private static PhotoVM ConvertPhotoToPhotoVM(Photo photo, bool isPrivate)
         {
             if (photo != null)
             {
                 PhotoVM photoView = new PhotoVM()
                 {
                     PhotoId = photo.PhotoId,
-                    IsPrivate = photo.IsPrivate,
                     ImageMimeType = photo.ImageMimeType,
                 };
-                if (!photoView.IsPrivate) photoView.ImageData = photo.ImageData;
+                if (!isPrivate) photoView.ImageData = photo.ImageData;
 
                 return photoView;
             }
@@ -80,12 +83,43 @@ namespace BLL.Converters
                 return new PhotoVM()
                 {
                     PhotoId = photo.PhotoId,
-                    IsPrivate = photo.IsPrivate,
                     ImageMimeType = photo.ImageMimeType,
                     ImageData = photo.ImageData
                 };                 
             }
             return null;
         }
+
+        private static BirthDayVM ConvertDayToDayVM(BirthDay day, bool isPrivate)
+        {
+            if (day != null)
+            {
+                if (!isPrivate)
+                {
+                    BirthDayVM dayVM = new BirthDayVM()
+                    {
+                        BirthDayId = day.BirthDayId,
+                        Date = day.Date
+                    };
+                    return dayVM;
+                }
+            }
+            return null;
+        }
+
+        private static BirthDayVM ConvertDayToEditDayVM(BirthDay day)
+        {
+            if (day != null)
+            {
+                BirthDayVM dayVM = new BirthDayVM()
+                {
+                    BirthDayId = day.BirthDayId,
+                    Date = day.Date
+                };
+                return dayVM;
+            }
+            return null;
+        }
+
     }
 }

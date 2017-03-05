@@ -10,7 +10,7 @@ namespace BLL.Converters
 {
     class ConverterContactToPerson
     {
-        public static Person ForNewSave(ContactEditM contact)
+        public static Person ForSave(ContactEditM contact)
         {
             Person person = new Person();
             person.PersonId = contact.PersonId;
@@ -18,6 +18,9 @@ namespace BLL.Converters
             person.Password = contact.Password;
             person.FirstName = contact.FirstName;
             person.LastName = contact.LastName;
+            person.IsPrivatePhoto = contact.IsPrivatePhoto;
+            person.IsPrivateBirthDay = contact.IsPrivateBirthDay;
+
             if (contact.Phones != null)
             {
                 person.Phones = ConvertListPhoneVMtoPhones(contact.Phones);
@@ -32,9 +35,13 @@ namespace BLL.Converters
                 person.Photo = ConvertPhotoVMtoPhoto(contact.Photo);
                 person.Photo.Person = person;
             }
-            
-            return person;
+            if (contact.BirthDay != null)
+            {
+                person.BirthDay = ConvertDayVMtoDay(contact.BirthDay);
+                person.BirthDay.Person = person;
 
+            }
+            return person;
         }
 
         private static IList<Phone> ConvertListPhoneVMtoPhones(IList<PhoneVM> vmPhones)
@@ -62,11 +69,20 @@ namespace BLL.Converters
             Photo photo = new Photo()
             {
                 PhotoId = vmPhoto.PhotoId,
-                IsPrivate = vmPhoto.IsPrivate,
                 ImageMimeType = vmPhoto.ImageMimeType,
                 ImageData = vmPhoto.ImageData
             };
             return photo;
+        }
+
+        private static BirthDay ConvertDayVMtoDay(BirthDayVM vmDay)
+        {
+            BirthDay day = new BirthDay()
+            {
+                BirthDayId = vmDay.BirthDayId,
+                Date = vmDay.Date
+            };
+            return day;
         }
     }
 }

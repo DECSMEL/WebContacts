@@ -70,6 +70,7 @@
     <Compile Include="Converters\ConverterContactToPerson.cs" />
     <Compile Include="Converters\ConverterPersonToContact.cs" />
     <Compile Include="Services\QuicklistService.cs" />
+    <Compile Include="ViewModel\BirthDayVM.cs" />
     <Compile Include="ViewModel\ContactVM.cs" />
     <Compile Include="ViewModel\ContactEditM.cs" />
     <Compile Include="Unity.cs" />

@@ -19,8 +19,11 @@ namespace IDAL.Entities
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public virtual IList<Phone> Phones { get; set; }
         public virtual Photo Photo { get; set; }
+        public bool IsPrivatePhoto { get; set; }
+        public virtual BirthDay BirthDay { get; set; }
+        public bool IsPrivateBirthDay { get; set; }
+        public virtual IList<Phone> Phones { get; set; }
         public virtual IList<Quicklist> Quicklist { get; set; }
 
     }

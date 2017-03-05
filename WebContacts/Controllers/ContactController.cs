@@ -13,6 +13,8 @@ namespace WebContacts.Controllers
     public class ContactController : Controller
     {
         private ContactService contactService = new ContactService();
+        private QuicklistService quicklistService = new QuicklistService();
+
 
         #region Login and Registration
         [HttpGet]
@@ -58,10 +60,7 @@ namespace WebContacts.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            var contact = new ContactEditM()
-            {
-                Photo = new PhotoVM()
-            };
+            var contact = new ContactEditM() { Photo = new PhotoVM()};
             return View("Register", contact);
 
         }
@@ -105,6 +104,12 @@ namespace WebContacts.Controllers
         {
             var phone = new PhoneVM();
             return PartialView("~/Views/Shared/EditorTemplates/PhoneVM.cshtml", phone);
+        }
+
+        public ActionResult AddBirthDay()
+        {
+            var day = new BirthDayVM();
+            return PartialView("~/Views/Shared/EditorTemplates/BirthDayVM.cshtml", day);
         }
 
         #endregion
@@ -170,10 +175,10 @@ namespace WebContacts.Controllers
             if (id != null)
             {
                 OneResult<ContactEditM> contact = contactService.GetContactForEdit(Int32.Parse(id));
-                contact.Data.Password = "test1234";
-                contact.Data.PasswordValidation = "test1234";
                 if (contact.IsOk)
                 {
+                    contact.Data.Password = "test1234";
+                    contact.Data.PasswordValidation = "test1234";
                     return View("EditProfile", contact.Data);
                 }
                 else
@@ -193,24 +198,24 @@ namespace WebContacts.Controllers
         [HttpPost]
         public ActionResult EditProfile(ContactEditM model, HttpPostedFileBase image = null)
         {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                if (image != null)
                 {
-                    if (image != null)
-                    {
-                        model.Photo.ImageMimeType = image.ContentType;
-                        model.Photo.ImageData = new byte[image.ContentLength];
-                        image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
-                    }
-                    contactService.Edit(model);
+                    model.Photo.ImageMimeType = image.ContentType;
+                    model.Photo.ImageData = new byte[image.ContentLength];
+                    image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
+                    contactService.Edit(model, true);
                 }
                 else
                 {
-                    ViewBag.Message = ResourceUI.EditFail;
-                    return View("Error");
+                    contactService.Edit(model, false);
                 }
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.EditFail;
+                return View("Error");
             }
             return RedirectToAction("All");
         }
@@ -260,6 +265,68 @@ namespace WebContacts.Controllers
 
         #endregion
 
-        
+        #region Work with Quicklist
+
+        [Authorize]
+        public ActionResult GetFavoriteContacts()
+        {
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
+            {
+                int contactId = Int32.Parse(id);
+                ListResult<ContactVM> contacts = quicklistService.GetAllFavoriteContacts(contactId);
+                if (contacts.IsOk)
+                {
+                    return View("All", contacts.ListData);
+                }
+                else
+                {
+                    ViewBag.Message = contacts.Message;
+                    return View("Error");
+                }
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginInvitation;
+                return View("Error");
+            }
+        }
+
+        [Authorize]
+        public ActionResult AddToFavorite(int contactId)
+        {
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
+            {
+                int listId = Int32.Parse(id);
+                quicklistService.AddToQuicklist(listId, contactId);
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginInvitation;
+                return View("Error");
+            }
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        [Authorize]
+        public ActionResult RemoveFromFavorite(int contactId)
+        {
+            string id = Request.Cookies["user"].Value;
+            if (id != null)
+            {
+                int listId = Int32.Parse(id);
+                quicklistService.RemoveFromQuicklist(listId, contactId);
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginInvitation;
+                return View("Error");
+            }
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        #endregion
+
+
     }
 }
