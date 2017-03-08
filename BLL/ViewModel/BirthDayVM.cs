@@ -10,15 +10,11 @@ namespace BLL.ViewModel
 {
     public class BirthDayVM
     {
-        public BirthDayVM()
-        {
-            Date = DateTime.Now;
-        }
         public int BirthDayId { get; set; }
 
         [DisplayName("Birthday")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}",ApplyFormatInEditMode = true)]
+//        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}",ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
     }

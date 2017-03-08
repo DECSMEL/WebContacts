@@ -13,8 +13,6 @@ namespace WebContacts.Controllers
     public class ContactController : Controller
     {
         private ContactService contactService = new ContactService();
-        private QuicklistService quicklistService = new QuicklistService();
-
 
         #region Login and Registration
         [HttpGet]
@@ -85,7 +83,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = ResourceUI.RegisterFail;
-                return View("Error");
+                return View("~/Views/Error");
             }
             return RedirectToAction("All");
         }
@@ -127,7 +125,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = contacts.Message;
-                return View("Error");
+                return View("~/Views/Error");
             }
         }
 
@@ -143,7 +141,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = contacts.Message;
-                return View("Error");
+                return View("~/Views/Error");
             }
         }
 
@@ -159,7 +157,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = contact.Message;
-                return View("Error");
+                return View("~/Views/Error");
             };
         }
 
@@ -184,13 +182,13 @@ namespace WebContacts.Controllers
                 else
                 {
                     ViewBag.Message = contact.Message;
-                    return View("Error");
+                    return View("~/Views/Error");
                 };
             }
             else
             {
                 ViewBag.Message = ResourceUI.LoginInvitation;
-                return View("Error");
+                return View("~/Views/Error");
             }
         }
 
@@ -215,7 +213,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = ResourceUI.EditFail;
-                return View("Error");
+                return View("~/Views/Error");
             }
             return RedirectToAction("All");
         }
@@ -233,7 +231,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = ResourceUI.LoginError;
-                return View("Error");
+                return View("~/Views/Error");
             }
         }
 
@@ -259,74 +257,12 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = ResourceUI.LoginError;
-                return View("Error");
+                return View("~/Views/Error");
             }
         }
 
         #endregion
-
-        #region Work with Quicklist
-
-        [Authorize]
-        public ActionResult GetFavoriteContacts()
-        {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
-            {
-                int contactId = Int32.Parse(id);
-                ListResult<ContactVM> contacts = quicklistService.GetAllFavoriteContacts(contactId);
-                if (contacts.IsOk)
-                {
-                    return View("All", contacts.ListData);
-                }
-                else
-                {
-                    ViewBag.Message = contacts.Message;
-                    return View("Error");
-                }
-            }
-            else
-            {
-                ViewBag.Message = ResourceUI.LoginInvitation;
-                return View("Error");
-            }
-        }
-
-        [Authorize]
-        public ActionResult AddToFavorite(int contactId)
-        {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
-            {
-                int listId = Int32.Parse(id);
-                quicklistService.AddToQuicklist(listId, contactId);
-            }
-            else
-            {
-                ViewBag.Message = ResourceUI.LoginInvitation;
-                return View("Error");
-            }
-            return Redirect(Request.UrlReferrer.ToString());
-        }
-
-        [Authorize]
-        public ActionResult RemoveFromFavorite(int contactId)
-        {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
-            {
-                int listId = Int32.Parse(id);
-                quicklistService.RemoveFromQuicklist(listId, contactId);
-            }
-            else
-            {
-                ViewBag.Message = ResourceUI.LoginInvitation;
-                return View("Error");
-            }
-            return Redirect(Request.UrlReferrer.ToString());
-        }
-        #endregion
-
+      
 
     }
 }

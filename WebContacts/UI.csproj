@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\QuicklistController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -140,12 +141,13 @@
     <Content Include="Views\Contact\Details.cshtml" />
     <Content Include="Views\Contact\Register.cshtml" />
     <Content Include="Views\Contact\Login.cshtml" />
-    <Content Include="Views\Contact\Error.cshtml" />
+    <Content Include="Views\Error.cshtml" />
     <Content Include="Views\Contact\EditProfile.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PhoneVM.cshtml" />
     <Content Include="Views\Contact\DeleteProfile.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\BirthDayVM.cshtml" />
+    <Content Include="Views\Quicklist\Favorite.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

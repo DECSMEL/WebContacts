@@ -70,8 +70,8 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Add to favorite", "AddToFavorite", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Remove from favorite", "RemoveFromFavorite", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add to favorite", "AddToFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Remove from favorite", "RemoveFromFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
     @Html.ActionLink("Back to all List", "All", null, new { @class = "btn btn-default" })
 </p>
 
