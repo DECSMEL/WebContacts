@@ -66,18 +66,9 @@ namespace EFDAL
                     context.Days.Add(person.BirthDay);
                 }
 
-                foreach (Phone phone in person.Phones)
-                {
-                    if (phone.PhoneId == 0)
-                    {
-                        context.Phones.Add(phone);
-                    }
-                    else
-                    {
-                        context.Entry(phone).State = EntityState.Modified;
-
-                    }
-                }
+                var phones = context.Phones.Where(p => p.PersonId == person.PersonId);
+                context.Phones.RemoveRange(phones);
+                context.Phones.AddRange(person.Phones);
 
                 context.Persons.Attach(person);
                 var entry = context.Entry(person);
@@ -97,7 +88,6 @@ namespace EFDAL
             }
             return true;
         }
-
         public bool Delete(int id)
         {
             using (var context = new DBContext())

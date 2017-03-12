@@ -123,8 +123,14 @@
   <data name="DeleteNotConfirm" xml:space="preserve">
     <value>Password incorrect. Can not delete profile.</value>
   </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>You successfull deleted your profile.</value>
+  </data>
   <data name="EditFail" xml:space="preserve">
     <value>Cannot proceed profile update.</value>
+  </data>
+  <data name="EditSuccess" xml:space="preserve">
+    <value>You successfull updated profile.</value>
   </data>
   <data name="FailLogin" xml:space="preserve">
     <value>The user name or password provided is incorrect. Please try again.</value>
@@ -134,6 +140,12 @@
   </data>
   <data name="LoginInvitation" xml:space="preserve">
     <value>Please login.</value>
+  </data>
+  <data name="QuickAddSuccess" xml:space="preserve">
+    <value>You successfull add contact to your favorite list.</value>
+  </data>
+  <data name="QuickRemSuccess" xml:space="preserve">
+    <value>You successfull remove contact from your favorite list.</value>
   </data>
   <data name="RegisterFail" xml:space="preserve">
     <value>Something wrong. Please repeat registration.</value>

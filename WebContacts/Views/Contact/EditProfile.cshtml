@@ -5,31 +5,30 @@
 }
 
 <script type="text/javascript">
-        $(function () {
-            $('#addphone').on('click', function () {
-                $.ajax({
-                    async: false,
-                    url: '/Contact/AddNewPhone'
-                }).success(function (partialView) {
-                    $('#new-Phone').append(partialView);
-                });
+    $(document).ready(function () {
+        $('#addphone').on('click', function () {
+            $.ajax({
+                async: false,
+                url: '/Contact/AddNewPhone'
+            }).success(function (partialView) {
+                $('#new-Phone').append(partialView);
             });
-
-            $('#dayadd').on('click', function () {
-                $.ajax({
-                    async: false,
-                    url: '/Contact/AddBirthDay'
-                }).success(function (partialView) {
-                    $('#birthday').append(partialView);
-                    $('#dayadd').remove();
-                });
-            });
-
-            $("#deleteRow").on('click', function () {
-                $(this).closest('.phoneRow').remove();
-            });
-
         });
+
+        $('#dayadd').on('click', function () {
+            $.ajax({
+                async: false,
+                url: '/Contact/AddBirthDay'
+            }).success(function (partialView) {
+                $('#birthday').append(partialView);
+                $('#dayadd').remove();
+            });
+        });
+
+        $('#new-Phone').on('click', '#deleteRow', function () {
+            $(this).closest('.phoneRow').remove();
+        });
+    });
 </script>
 
 
@@ -59,7 +58,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Update photo</label>
             <div class="col-md-10">
-                <a class="btn btn-default" href="javascript:;">
+                <a class="btn-default" href="javascript:;">
                     Choose File...
                     <input type="file" name="image" size="40"
                            style="position:absolute;z-index:2;top:0;left:0; filter: alpha(opacity= 0); opacity:0;background-color:transparent;color:transparent;"
@@ -128,22 +127,23 @@
 
         <div id="new-Phone">
             @Html.EditorFor(m => m.Phones)
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="button" id="addphone" name="addphone" value="Add Phone" class="btn btn-default" />
+                    <input type="button" id="addphone" name="addphone" value="Add new phone" class="btn btn-default" />
                 </div>
             </div>
         </div>
-
+        <br>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update" class="btn btn-default" />
+                @Html.ActionLink("Delete My Profile", "DeleteMyProfile", Model.PersonId, new { @class = "btn btn-danger" })
             </div>
         </div>
-
+        <br>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Delete My Profile", "DeleteMyProfile", null, new { @class = "btn btn-danger" })
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </div>
     </div>

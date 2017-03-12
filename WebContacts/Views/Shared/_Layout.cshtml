@@ -26,7 +26,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("All contacts", "All", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
                     <li>@Html.ActionLink("Edit my profile", "EditProfile", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    <li>@Html.ActionLink("My favorite contacts", "GetFavoriteContacts", "Quicklist", new { area = "" }, new { @class = "navbar-brand" })</li>
+                    <li>@Html.ActionLink("My favorite contacts", "GetFavoriteContacts", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-left">                    
@@ -34,17 +34,27 @@
                     @using (Html.BeginForm("FindByLastName", "Contact"))
                     {
                         @Html.AntiForgeryToken()
-                        <input type="search" name = "lastName" placeholder="Search by last name">
-                        <input type="submit" value="Search"/>
+                        <input type="search" name ="lastname" placeholder="Search by last name" class="navbar-form"/>
+                        <input type="submit" value="Search" class="navbar-btn"/>
                     }
                     </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Log out", "Logout", "Contact", new { area = "" }, new { @class = "navbar-brand" })</li>
-                    </ul>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="navbar-text">Hello @User.Identity.Name !</li>
+                            <li>@Html.ActionLink("Log out", "Logout", "Contact", new { @class = "navbar-brand" })</li>
+                        </ul>
+                    }
+                    
             </div>
         </div>
     </div>
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="alert alert-success">@TempData["Info"]</div>
+    }
 
     <div class="container body-content">
         @RenderBody()

@@ -116,7 +116,6 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ContactController.cs" />
-    <Compile Include="Controllers\QuicklistController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -130,7 +129,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Contact\All.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -141,13 +139,14 @@
     <Content Include="Views\Contact\Details.cshtml" />
     <Content Include="Views\Contact\Register.cshtml" />
     <Content Include="Views\Contact\Login.cshtml" />
-    <Content Include="Views\Error.cshtml" />
+    <Content Include="Views\Contact\Error.cshtml" />
     <Content Include="Views\Contact\EditProfile.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PhoneVM.cshtml" />
     <Content Include="Views\Contact\DeleteProfile.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\BirthDayVM.cshtml" />
-    <Content Include="Views\Quicklist\Favorite.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -203,8 +202,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /y /d  "$(ProjectDir)..\EFDAL\bin\Debug\EFDAL.dll" "$(ProjectDir)$(OutDir)"
-xcopy /y /d  "$(ProjectDir)..\EFDAL\bin\Release\EFDAL.dll" "$(ProjectDir)$(OutDir)"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

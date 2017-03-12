@@ -13,6 +13,8 @@ namespace WebContacts.Controllers
     public class ContactController : Controller
     {
         private ContactService contactService = new ContactService();
+        private QuicklistService quicklistService = new QuicklistService();
+
 
         #region Login and Registration
         [HttpGet]
@@ -31,9 +33,6 @@ namespace WebContacts.Controllers
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, false);
-
-                    int id = contactService.GetIdByEmail(model.Email);
-                    Response.SetCookie(new HttpCookie("user", id.ToString()));
                 }
                 else
                 {
@@ -64,7 +63,7 @@ namespace WebContacts.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(ContactEditM model, HttpPostedFileBase image = null)
+        public ActionResult Register(ContactEditM model, BirthDayVM day = null, HttpPostedFileBase image = null)
         {
             if (ModelState.IsValid)
             {
@@ -74,16 +73,18 @@ namespace WebContacts.Controllers
                     model.Photo.ImageData = new byte[image.ContentLength];
                     image.InputStream.Read(model.Photo.ImageData, 0, image.ContentLength);
                 }
+                if (day != null)
+                {
+                    model.BirthDay = day;
+                }
 
                 contactService.Create(model);
                 FormsAuthentication.SetAuthCookie(model.Email, false);
-                var userCookie = new HttpCookie("user", contactService.GetIdByEmail(model.Email).ToString());
-                Response.SetCookie(userCookie);
             }
             else
             {
                 ViewBag.Message = ResourceUI.RegisterFail;
-                return View("~/Views/Error");
+                return View("Error");
             }
             return RedirectToAction("All");
         }
@@ -125,7 +126,7 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = contacts.Message;
-                return View("~/Views/Error");
+                return View("Error");
             }
         }
 
@@ -141,10 +142,9 @@ namespace WebContacts.Controllers
             else
             {
                 ViewBag.Message = contacts.Message;
-                return View("~/Views/Error");
+                return View("Error");
             }
         }
-
 
         [Authorize]
         public ActionResult Details(int id)
@@ -152,12 +152,14 @@ namespace WebContacts.Controllers
             OneResult<ContactVM> contact = contactService.GetContactDetails(id);
             if (contact.IsOk)
             {
+                int listId = contactService.GetIdByEmail(User.Identity.Name);
+                ViewBag.InFavor = quicklistService.IsInQuicklist(listId, id);
                 return View("Details", contact.Data);
             }
             else
             {
                 ViewBag.Message = contact.Message;
-                return View("~/Views/Error");
+                return View("Error");
             };
         }
 
@@ -169,10 +171,10 @@ namespace WebContacts.Controllers
         [HttpGet]
         public ActionResult EditProfile()
         {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
-            {
-                OneResult<ContactEditM> contact = contactService.GetContactForEdit(Int32.Parse(id));
+            int id = contactService.GetIdByEmail(User.Identity.Name);
+            if (id != 0)
+            {                
+                OneResult<ContactEditM> contact = contactService.GetContactForEdit(id);
                 if (contact.IsOk)
                 {
                     contact.Data.Password = "test1234";
@@ -182,22 +184,22 @@ namespace WebContacts.Controllers
                 else
                 {
                     ViewBag.Message = contact.Message;
-                    return View("~/Views/Error");
+                    return View("Error");
                 };
             }
             else
             {
-                ViewBag.Message = ResourceUI.LoginInvitation;
-                return View("~/Views/Error");
+                ViewBag.Message = ResourceUI.LoginError;
+                return View("Error");
             }
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult EditProfile(ContactEditM model, HttpPostedFileBase image = null)
+        public ActionResult EditProfile(ContactEditM model, BirthDayVM day = null, HttpPostedFileBase image = null)
         {
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid && model.Email.Equals(User.Identity.Name))
+            {               
                 if (image != null)
                 {
                     model.Photo.ImageMimeType = image.ContentType;
@@ -209,60 +211,105 @@ namespace WebContacts.Controllers
                 {
                     contactService.Edit(model, false);
                 }
+                TempData["Info"] = ResourceUI.EditSuccess; 
+                return RedirectToAction("All");
             }
             else
             {
                 ViewBag.Message = ResourceUI.EditFail;
-                return View("~/Views/Error");
+                return View("Error");
             }
-            return RedirectToAction("All");
         }
 
         [Authorize]
         [HttpGet]
         public ActionResult DeleteMyProfile()
         {
-            string id = Request.Cookies["user"].Value;
-            if (id != null)
-            {
-                ViewBag.Message = ResourceUI.DeleteConfirm;
-                return View("DeleteProfile");
-            }
-            else
-            {
-                ViewBag.Message = ResourceUI.LoginError;
-                return View("~/Views/Error");
-            }
+            ViewBag.Message = ResourceUI.DeleteConfirm;
+            return View("DeleteProfile");
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult DeleteMyProfile(DeleteVM model)
         {
-            string idStr = Request.Cookies["user"].Value;
-            if (idStr != null)
+            string userEmail = User.Identity.Name;
+            if (contactService.PasswordCheck(userEmail, model.Password))
             {
-                int id = Int32.Parse(idStr);
-                if (contactService.PasswordCheck(id, model.Password))
+                int id = contactService.GetIdByEmail(userEmail);
+                contactService.Delete(id);
+                TempData["Info"] = ResourceUI.DeleteSuccess;
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.DeleteNotConfirm;
+                return View("Delete");
+            }
+        }
+
+        #endregion
+
+        #region Work with Quicklist
+
+        [Authorize]
+        public ActionResult GetFavoriteContacts()
+        {
+            int listId = contactService.GetIdByEmail(User.Identity.Name);
+            if (listId != 0)
+            {
+                ListResult<ContactVM> contacts = quicklistService.GetAllFavoriteContacts(listId);
+                if (contacts.IsOk)
                 {
-                    contactService.Delete(id);
-                    return RedirectToAction("Login");
+                    return View("All", contacts.ListData);
                 }
                 else
                 {
-                    ViewBag.Message = ResourceUI.DeleteNotConfirm;
-                    return View("Delete");
+                    ViewBag.Message = contacts.Message;
+                    return View("Error");
                 }
             }
             else
             {
                 ViewBag.Message = ResourceUI.LoginError;
-                return View("~/Views/Error");
+                return View("Error");
             }
         }
 
+        [Authorize]
+        public ActionResult AddToFavorite(int contactId)
+        {
+            int listId = contactService.GetIdByEmail(User.Identity.Name);
+            if (listId != 0)
+            {
+                TempData["Info"] = ResourceUI.QuickAddSuccess;
+                quicklistService.AddToQuicklist(listId, contactId);
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginError;
+                return View("Error");
+            }
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        [Authorize]
+        public ActionResult RemoveFromFavorite(int contactId)
+        {
+            int listId = contactService.GetIdByEmail(User.Identity.Name);
+            if (listId != 0)
+            {
+                quicklistService.RemoveFromQuicklist(listId, contactId);
+                TempData["Info"] = ResourceUI.QuickRemSuccess;
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+            else
+            {
+                ViewBag.Message = ResourceUI.LoginError;
+                return View("Error");
+            }
+        }
         #endregion
-      
 
     }
 }

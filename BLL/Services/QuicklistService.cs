@@ -22,7 +22,7 @@ namespace BLL.Services
             try
             {
                 var quicklist = quicklistDao.GetById(contactId);
-                if(quicklist != null && quicklist.Persons != null)
+                if (quicklist != null && quicklist.Persons != null)
                 {
                     foreach (Person pers in quicklist.Persons)
                     {
@@ -62,7 +62,7 @@ namespace BLL.Services
                     quicklistDao.AddToQuicklist(listId, contactId);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //TODO logging
                 return false;
@@ -78,8 +78,8 @@ namespace BLL.Services
                 if (quicklist != null)
                 {
                     quicklistDao.RemoveFromQuicklist(listId, contactId);
-                }                
-     
+                }
+
             }
             catch (Exception)
             {
@@ -89,5 +89,18 @@ namespace BLL.Services
             return true;
         }
 
-    }
+        public bool IsInQuicklist(int listId, int contactId)
+        {
+            try
+            {
+                return quicklistDao.IsInQuicklist(listId, contactId);
+            }
+            catch (Exception)
+            {
+                //TODO logging
+                return false;
+            }
+        }
+
+    } 
 }

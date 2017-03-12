@@ -1,9 +1,10 @@
 ﻿@model BLL.ViewModel.PhoneVM
 @using HtmlHelpers.BeginCollectionItem
 
-@using (Html.BeginCollectionItem("Phones"))
-{
-    <div id="phoneRow" class="phoneRow">
+
+<div id="phoneRow" class="phoneRow">
+    @using (Html.BeginCollectionItem("Phones"))
+    {
 
         @Html.HiddenFor(model => model.PhoneId)
         <div class="form-group">
@@ -23,12 +24,16 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="button" id="delphone" name="delphone" value="Remove Phone" class="btn btn-default" />
+                <a href="#" id="deleteRow" class="btn btn-warning">Delete this phone</a>
             </div>
         </div>
+    }
+</div>
 
-    </div>
-}
+
+
+
+
 
 
 

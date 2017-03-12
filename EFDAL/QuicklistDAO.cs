@@ -17,7 +17,7 @@ namespace EFDAL
             {
                 return context.Quicklists.Include(p => p.Persons.Select(ph => ph.Phones))
                                          .Where(l => l.QuicklistId == listId)
-                                         .SingleOrDefault();                                    
+                                         .SingleOrDefault();
 
             }
         }
@@ -61,6 +61,21 @@ namespace EFDAL
                 context.SaveChanges();
             }
             return true;
+        }
+
+        public bool IsInQuicklist(int listId, int personId)
+        {
+            using (var context = new DBContext())
+            {
+                var list = context.Quicklists.Include(p => p.Persons)
+                                             .Where(l => l.QuicklistId == listId)
+                                             .Single();
+                foreach (Person p in list.Persons)
+                {
+                    if (p.PersonId == personId) return true;
+                }
+            }
+            return false;
         }
     }
 }

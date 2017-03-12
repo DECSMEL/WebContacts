@@ -21,7 +21,8 @@
                          src="@imgSrc" />
                 </div>
             }
-        </dd> 
+            <br>
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -55,9 +56,11 @@
         @foreach (var phone in Model.Phones)
         {
             <dt>
+                <br>
                 @Html.DisplayNameFor(ph => phone.Type)
             </dt>
             <dd>
+                <br>
                 @Html.DisplayFor(ph => phone.Type)
             </dd>
             <dt>
@@ -67,11 +70,19 @@
                 @Html.DisplayFor(ph => phone.Number)
             </dd>
         }
+        <dd>
+            <br>
+            @if (ViewBag.InFavor == true)
+            {
+                @Html.ActionLink("Remove from favorite", "RemoveFromFavorite", "Contact", new { contactId = Model.ContactId }, new { @class = "btn btn-warning" })
+            }
+            else
+            {
+                @Html.ActionLink("Add to favorite", "AddToFavorite", "Contact", new { contactId = Model.ContactId }, new { @class = "btn btn-primary" })
+            }
+            <br>
+            <br>
+            @Html.ActionLink("Back to all List", "All", null, new { @class = "btn btn-default" })
+        </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Add to favorite", "AddToFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Remove from favorite", "RemoveFromFavorite", "Quicklist", new { contactId = Model.ContactId }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Back to all List", "All", null, new { @class = "btn btn-default" })
-</p>
-

@@ -1,6 +1,5 @@
 ﻿@model BLL.ViewModel.BirthDayVM
 
-@using (Html.BeginCollectionItem("Birthday")) { 
 @Html.HiddenFor(model => model.BirthDayId)
 <div class="form-group">
     @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2", id = "0"})
@@ -9,5 +8,4 @@
     </div>
 </div>
 
-}
 
